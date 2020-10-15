@@ -18,10 +18,10 @@ int main(int argc, char* argv[]){
     std::vector<Body> bodies{
         Body{7.347e11, 5, {750, 350}},
         Body{5.972e13, 20, {800, 450}},
-        Body{5.972e13, 5, {850, 250}},
+        Body{5.972e13, 5, {660, 250}},
         Body{5.972e13, 5, {650, 450}},
         Body{5.972e13, 5, {600, 350}}
-        // * 1e-11 instead of multiply with GRAV_CONST
+        // * multiply mass by 1e-11 instead of multiply later with GRAV_CONST
     };
 
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
 
 sf::Vector2<long double> calculateForce(const Body &first, const Body &second){
     double x_diff = first.getPosition().x - second.getPosition().x;
-    double y_diff = first.getPosition().x - second.getPosition().x;
+    double y_diff = first.getPosition().y - second.getPosition().y;
     double diff_sqrt = std::pow(x_diff, 2) + std::pow(y_diff, 2);
     double norm_diff = std::sqrt(diff_sqrt);
 
