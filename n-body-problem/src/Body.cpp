@@ -30,6 +30,5 @@ void Body::move(float time_step) {
     velocity += acceleration * static_cast<long double>(time_step);
     shape.move(static_cast<sf::Vector2f>(velocity) * time_step);
 
-    printf("%f %Lf %Lf\n", shape.getPosition().x, velocity.x, acceleration.x);
     clearAcceleration();
 }
