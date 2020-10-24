@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "includes/Body.h"
+#include "includes/LinearVidmo.h"
 
 sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 bool areColliding(const Body& first, const Body& second);
@@ -14,21 +15,23 @@ static const int TIME_STEP = 10;                          // [s] amount of time 
 
 int main(int argc, char* argv[]){
 
-    printf("gravitational constant = %Le", GRAVITATIONAL_CONST);
+//    printf("gravitational constant = %Lf", GRAVITATIONAL_CONST);
 
     std::vector<Body> bodies{
 //        Body{7.347e22, 10, {750, 350}},
 //        Body{5.972e24, 40, {800, 450}},
-        Body{5.972e22, 10, {660, 250}},
-        Body{5.972e22, 10, {630, 450}},
-        Body{5.972e22, 10, {600, 350}}
+//        Body{5.972e22, 10, {660, 250}, std::make_unique<LinearVidmo>(10)},
+        Body{5.972e22, 10, {630, 450}, std::make_unique<LinearVidmo>(10)},
+        Body{5.972e22, 10, {600, 350}, std::make_unique<LinearVidmo>(10)}
         // * multiply mass by 1e-11 instead of multiply later with GRAV_CONST
     };
+    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, std::make_unique<LinearVidmo>(10)}));
 
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(360);
 
     while(window.isOpen()){
+
 
         sf::Event event{};
         if(window.pollEvent(event)){

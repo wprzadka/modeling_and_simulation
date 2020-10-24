@@ -7,16 +7,21 @@
 
 
 #include <SFML/Graphics.hpp>
+#include "Vidmo.h"
 
 class Body {
     double mass;
     sf::Vector2<long double> velocity{0, 0};
     sf::Vector2<long double> acceleration{0, 0};
     sf::CircleShape shape;
+    std::unique_ptr<Vidmo> positionVidmo = nullptr;
 
 public:
-    Body(double mass, int radius);
+//    Body(double mass, int radius);
     Body(double mass, int radius, sf::Vector2f position);
+    Body(double mass, int radius, sf::Vector2f position, std::unique_ptr<Vidmo> vidmo);
+    Body(const Body& original);
+    Body(Body&& original);
     virtual ~Body() = default;
 
     void draw(sf::RenderWindow&) const;
