@@ -7,19 +7,19 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "Vidmo.h"
+#include "Spectrum.h"
 
 class Body {
     double mass;
     sf::Vector2<long double> velocity{0, 0};
     sf::Vector2<long double> acceleration{0, 0};
     sf::CircleShape shape;
-    std::unique_ptr<Vidmo> positionVidmo = nullptr;
+    std::unique_ptr<Spectrum> positionVidmo = nullptr;
 
 public:
 //    Body(double mass, int radius);
     Body(double mass, int radius, sf::Vector2f position);
-    Body(double mass, int radius, sf::Vector2f position, std::unique_ptr<Vidmo> vidmo);
+    Body(double mass, int radius, sf::Vector2f position, std::unique_ptr<Spectrum> vidmo);
     Body(const Body& original);
     Body(Body&& original);
     virtual ~Body() = default;

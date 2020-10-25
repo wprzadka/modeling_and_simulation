@@ -2,11 +2,11 @@
 // Created by viking on 24.10.20.
 //
 
-#ifndef N_BODY_PROBLEM_VIDMO_H
-#define N_BODY_PROBLEM_VIDMO_H
+#ifndef N_BODY_PROBLEM_SPECTRUM_H
+#define N_BODY_PROBLEM_SPECTRUM_H
 
 
-class Vidmo {
+class Spectrum {
 
 public:
     virtual void draw (const sf::RenderWindow& window) = 0;
@@ -15,4 +15,4 @@ public:
 };
 
 
-#endif //N_BODY_PROBLEM_VIDMO_H
+#endif //N_BODY_PROBLEM_SPECTRUM_H

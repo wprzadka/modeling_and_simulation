@@ -7,13 +7,13 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "Vidmo.h"
+#include "Spectrum.h"
 
-class LinearVidmo : public Vidmo {
+class LinearSpectrum : public Spectrum {
     sf::VertexArray points;
 
 public:
-    LinearVidmo(int numOfPoints);
+    LinearSpectrum(int numOfPoints);
 
     void draw (const sf::RenderWindow& window);
 

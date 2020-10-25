@@ -3,7 +3,7 @@
 //
 #include <random>
 #include "../includes/Body.h"
-#include "../includes/LinearVidmo.h"
+#include "../includes/LinearSpectrum.h"
 
 /*
 Body::Body(double mass, int radius)
@@ -19,7 +19,7 @@ Body::Body(double mass, int radius, sf::Vector2f position): mass(mass), shape(ra
     shape.setPosition(position);
 }
 
-Body::Body(double mass, int radius, sf::Vector2f position, std::unique_ptr<Vidmo> vidmo)
+Body::Body(double mass, int radius, sf::Vector2f position, std::unique_ptr<Spectrum> vidmo)
         : mass(mass), shape(radius), positionVidmo(std::move(vidmo)) {
 
     shape.setPosition(position);

@@ -8,7 +8,7 @@ include_directories(include)
 add_executable(${PROJECT_NAME}
         main.cpp
         src/Body.cpp
-        src/LinearVidmo.cpp
+        src/LinearSpectrum.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} -lsfml-window -lsfml-graphics -lsfml-system)
