@@ -11,11 +11,14 @@
 
 class LinearSpectrum : public Spectrum {
     sf::VertexArray points;
+    sf::Color color;
 
 public:
-    LinearSpectrum(int numOfPoints);
+    LinearSpectrum();
 
-    void draw (const sf::RenderWindow& window);
+    void draw (sf::RenderWindow& window);
+
+    void setColor(const sf::Color&);
 
     void addPosition(sf::Vector2f position);
 };

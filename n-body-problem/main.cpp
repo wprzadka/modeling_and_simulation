@@ -11,7 +11,7 @@ bool areColliding(const Body& first, const Body& second);
 
 static const long double GRAVITATIONAL_CONST = 6.674e-11; // [m^3⋅kg^−1⋅s^−2]
 static const long double DISTANCE_UNIT = 1e6;             // [m] 1 distance unit = 10^6 m
-static const int TIME_STEP = 10;                          // [s] amount of time in one iteration
+static const int TIME_STEP = 1;                          // [s] amount of time in one iteration
 
 int main(int argc, char* argv[]){
 
@@ -21,11 +21,15 @@ int main(int argc, char* argv[]){
 //        Body{7.347e22, 10, {750, 350}},
 //        Body{5.972e24, 40, {800, 450}},
 //        Body{5.972e22, 10, {660, 250}, std::make_unique<LinearSpectrum>(10)},
-        Body{5.972e22, 10, {630, 450}, std::make_unique<LinearSpectrum>(10)},
-        Body{5.972e22, 10, {600, 350}, std::make_unique<LinearSpectrum>(10)}
+//        Body{5.972e22, 10, {630, 450}, sf::Color(255, 0, 0), std::make_unique<LinearSpectrum>()},
+//        Body{5.972e22, 10, {600, 350}, sf::Color(0, 255, 0), std::make_unique<LinearSpectrum>()}
         // * multiply mass by 1e-11 instead of multiply later with GRAV_CONST
     };
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, std::make_unique<LinearSpectrum>(10)}));
+
+//    std::vector<Body> bodies(3);
+    bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
     window.setFramerateLimit(360);
@@ -61,6 +65,13 @@ int main(int argc, char* argv[]){
         for(const auto& body : bodies){
             body.draw(window);
         }
+
+        auto points = sf::VertexArray(sf::Lines, 4);
+        points[0].position = sf::Vector2f(10, 0);
+        points[1].position = sf::Vector2f(20, 0);
+        points[2].position = sf::Vector2f(30, 5);
+        points[3].position = sf::Vector2f(40, 2);
+        window.draw(points);
 
         window.display();
     }

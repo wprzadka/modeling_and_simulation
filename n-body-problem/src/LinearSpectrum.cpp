@@ -5,13 +5,18 @@
 
 #include "../includes/LinearSpectrum.h"
 
-LinearSpectrum::LinearSpectrum(int numOfPoints): points(sf::Lines, numOfPoints) {}
-
-void LinearSpectrum::draw(const sf::RenderWindow& window) {
-//    window.draw(points, sf::RenderStates());
-    printf("draw\n");
+LinearSpectrum::LinearSpectrum(): points(sf::Lines), color(0, 0, 0) {
 }
 
-void LinearSpectrum::addPosition(sf::Vector2f possition) {
-    points.append(sf::Vertex(possition));
+void LinearSpectrum::draw(sf::RenderWindow& window) {
+    window.draw(points);
+}
+
+void LinearSpectrum::setColor(const sf::Color& newColor){
+    color = newColor;
+}
+
+
+void LinearSpectrum::addPosition(sf::Vector2f position) {
+    points.append(sf::Vertex(position, color));
 }
