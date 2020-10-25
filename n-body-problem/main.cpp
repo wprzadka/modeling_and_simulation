@@ -63,15 +63,12 @@ int main(int argc, char* argv[]){
         }
 
         for(const auto& body : bodies){
+            body.drawSpectrum(window);
+        }
+        for(const auto& body : bodies){
             body.draw(window);
         }
 
-        auto points = sf::VertexArray(sf::Lines, 4);
-        points[0].position = sf::Vector2f(10, 0);
-        points[1].position = sf::Vector2f(20, 0);
-        points[2].position = sf::Vector2f(30, 5);
-        points[3].position = sf::Vector2f(40, 2);
-        window.draw(points);
 
         window.display();
     }

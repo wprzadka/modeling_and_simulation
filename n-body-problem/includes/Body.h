@@ -26,6 +26,7 @@ public:
     virtual ~Body() = default;
 
     void draw(sf::RenderWindow&) const;
+    void drawSpectrum(sf::RenderWindow&) const;
     void addForce(sf::Vector2<long double> force);
     void move(float time_step);
 

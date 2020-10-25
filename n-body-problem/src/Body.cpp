@@ -15,6 +15,7 @@ Body::Body(double mass, float radius, sf::Vector2f position, sf::Color color, st
 
     shape.setOrigin(radius, radius);
     shape.setPosition(position);
+    shape.setOutlineThickness(1);
     shape.setFillColor(color);
     if(positionSpectrum != nullptr){
         positionSpectrum->setColor(color);
@@ -29,10 +30,13 @@ Body::Body(Body &&original) noexcept :
         positionSpectrum(std::move(original.positionSpectrum)){}
 
 void Body::draw(sf::RenderWindow& window) const {
+    window.draw(shape);
+}
+
+void Body::drawSpectrum(sf::RenderWindow& window) const{
     if(positionSpectrum != nullptr){
         positionSpectrum->draw(window);
     }
-    window.draw(shape);
 }
 
 void  Body::addForce(sf::Vector2<long double> force) {
