@@ -20,16 +20,16 @@ int main(int argc, char* argv[]){
     std::vector<Body> bodies{
 //        Body{7.347e22, 10, {750, 350}},
 //        Body{5.972e24, 40, {800, 450}},
-//        Body{5.972e22, 10, {660, 250}, std::make_unique<LinearSpectrum>(10)},
-//        Body{5.972e22, 10, {630, 450}, sf::Color(255, 0, 0), std::make_unique<LinearSpectrum>()},
-//        Body{5.972e22, 10, {600, 350}, sf::Color(0, 255, 0), std::make_unique<LinearSpectrum>()}
+        Body{5.972e24, 40, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()},
+        Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()},
+        Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}
         // * multiply mass by 1e-11 instead of multiply later with GRAV_CONST
     };
 
 //    std::vector<Body> bodies(3);
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
+//    bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
+//    bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
+//    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
     window.setFramerateLimit(360);
@@ -69,6 +69,20 @@ int main(int argc, char* argv[]){
             body.draw(window);
         }
 
+        sf::Vector2<double> massCenterPosition{0, 0};
+        long double totalMassOfSystem = 0;
+        for(const auto& body : bodies){
+            massCenterPosition += body.getMass() * sf::Vector2<double>(body.getPosition());
+            totalMassOfSystem += body.getMass();
+        }
+        auto massCenter = sf::CircleShape(1);
+        massCenter.setPosition(
+                static_cast<sf::Vector2<float>>(
+                        massCenterPosition / static_cast<double>(totalMassOfSystem)
+                        ));
+        massCenter.setFillColor(sf::Color(255, 255, 255));
+        window.draw(massCenter);
+//        printf("(%f, %f)\n", massCenter.getPosition().x, massCenter.getPosition().y);
 
         window.display();
     }
