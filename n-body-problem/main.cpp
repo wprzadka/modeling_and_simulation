@@ -58,6 +58,20 @@ int main(int argc, char* argv[]){
             body.draw(window);
         }
 
+        sf::Vector2<double> massCenterPosition{0, 0};
+        long double totalMassOfSystem = 0;
+        for(const auto& body : bodies){
+            massCenterPosition += body.getMass() * sf::Vector2<double>(body.getPosition());
+            totalMassOfSystem += body.getMass();
+        }
+        auto massCenter = sf::CircleShape(1);
+        massCenter.setPosition(
+                static_cast<sf::Vector2<float>>(
+                        massCenterPosition / static_cast<double>(totalMassOfSystem)
+                        ));
+        massCenter.setFillColor(sf::Color(255, 255, 255));
+        window.draw(massCenter);
+//        printf("(%f, %f)\n", massCenter.getPosition().x, massCenter.getPosition().y);
 
         window.display();
     }
