@@ -5,13 +5,14 @@
 #include <cmath>
 #include "includes/Body.h"
 #include "includes/LinearSpectrum.h"
+#include "includes/MassCenter.h"
 
-sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
-bool areColliding(const Body& first, const Body& second);
+static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
+static bool areColliding(const Body& first, const Body& second);
 
 static const long double GRAVITATIONAL_CONST = 6.674e-11; // [m^3⋅kg^−1⋅s^−2]
 static const long double DISTANCE_UNIT = 1e6;             // [m] 1 distance unit = 10^6 m
-static const int TIME_STEP = 1;                          // [s] amount of time in one iteration
+static const int TIME_STEP = 10;                          // [s] amount of time in one iteration
 
 int main(int argc, char* argv[]){
 
@@ -23,8 +24,9 @@ int main(int argc, char* argv[]){
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
     window.setFramerateLimit(60);
 
-    while(window.isOpen()){
+    MassCenter center{bodies, 2};
 
+    while(window.isOpen()){
 
         sf::Event event{};
         if(window.pollEvent(event)){
@@ -57,22 +59,7 @@ int main(int argc, char* argv[]){
         for(const auto& body : bodies){
             body.draw(window);
         }
-
-        sf::Vector2<double> massCenterPosition{0, 0};
-        long double totalMassOfSystem = 0;
-        for(const auto& body : bodies){
-            massCenterPosition += body.getMass() * sf::Vector2<double>(body.getPosition());
-            totalMassOfSystem += body.getMass();
-        }
-        auto massCenter = sf::CircleShape(1);
-        massCenter.setPosition(
-                static_cast<sf::Vector2<float>>(
-                        massCenterPosition / static_cast<double>(totalMassOfSystem)
-                        ));
-        massCenter.setFillColor(sf::Color(255, 255, 255));
-        window.draw(massCenter);
-//        printf("(%f, %f)\n", massCenter.getPosition().x, massCenter.getPosition().y);
-
+        center.draw(window);
         window.display();
     }
     return 0;
