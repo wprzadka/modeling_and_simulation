@@ -15,24 +15,13 @@ static const int TIME_STEP = 1;                          // [s] amount of time i
 
 int main(int argc, char* argv[]){
 
-//    printf("gravitational constant = %Lf", GRAVITATIONAL_CONST);
-
-    std::vector<Body> bodies{
-//        Body{7.347e22, 10, {750, 350}},
-//        Body{5.972e24, 40, {800, 450}},
-//        Body{5.972e22, 10, {660, 250}, std::make_unique<LinearSpectrum>(10)},
-//        Body{5.972e22, 10, {630, 450}, sf::Color(255, 0, 0), std::make_unique<LinearSpectrum>()},
-//        Body{5.972e22, 10, {600, 350}, sf::Color(0, 255, 0), std::make_unique<LinearSpectrum>()}
-        // * multiply mass by 1e-11 instead of multiply later with GRAV_CONST
-    };
-
-//    std::vector<Body> bodies(3);
+    std::vector<Body> bodies{};
     bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
     bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
     bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
-    window.setFramerateLimit(360);
+    window.setFramerateLimit(60);
 
     while(window.isOpen()){
 
