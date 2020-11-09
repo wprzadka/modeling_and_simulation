@@ -6,6 +6,7 @@
 #include "includes/Body.h"
 #include "includes/LinearSpectrum.h"
 #include "includes/MassCenter.h"
+#include "includes/SpaceGrid.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
@@ -14,17 +15,20 @@ static const long double GRAVITATIONAL_CONST = 6.674e-11; // [m^3⋅kg^−1⋅s^
 static const long double DISTANCE_UNIT = 1e6;             // [m] 1 distance unit = 10^6 m
 static const int TIME_STEP = 10;                          // [s] amount of time in one iteration
 
-int main(int argc, char* argv[]){
+int main(){
+
+    const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
     bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
     bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
     bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
 
-    sf::RenderWindow window(sf::VideoMode(1200, 900), "n-body");
+    sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
+    SpaceGrid grid{window_size, 100, 2, sf::Color(60, 60, 60)};
 
     while(window.isOpen()){
 
@@ -53,6 +57,7 @@ int main(int argc, char* argv[]){
             body.move(TIME_STEP);
         }
 
+        grid.draw(window);
         for(const auto& body : bodies){
             body.drawSpectrum(window);
         }
@@ -60,6 +65,7 @@ int main(int argc, char* argv[]){
             body.draw(window);
         }
         center.draw(window);
+
         window.display();
     }
     return 0;
