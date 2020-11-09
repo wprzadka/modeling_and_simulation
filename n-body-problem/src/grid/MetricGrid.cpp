@@ -2,7 +2,7 @@
 // Created by viking on 09.11.2020.
 //
 
-#include "../includes/MetricGrid.h"
+#include "../../includes/grid/MetricGrid.h"
 
 MetricGrid::MetricGrid(std::pair<float, float> window_size, float distance, float thickness, sf::Color color)
     : lines(window_size.first + window_size.second / distance) {

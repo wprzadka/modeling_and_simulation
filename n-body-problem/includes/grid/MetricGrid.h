@@ -8,9 +8,10 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "Body.h"
+#include "../Body.h"
+#include "Grid.h"
 
-class MetricGrid {
+class MetricGrid : public Grid {
 
     std::vector<sf::RectangleShape> lines;
 

@@ -6,8 +6,9 @@
 #include "includes/Body.h"
 #include "includes/LinearSpectrum.h"
 #include "includes/MassCenter.h"
-#include "includes/MetricGrid.h"
-#include "includes/EinstainGrid.h"
+#include "includes/grid/Grid.h"
+#include "includes/grid/MetricGrid.h"
+#include "includes/grid/EinsteinGrid.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
@@ -29,9 +30,11 @@ int main(){
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    MetricGrid grid{window_size, 50, 2, sf::Color(60, 60, 60)};
+    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 50, 2,
+                                                                sf::Color(60, 60, 60));
 
-    while(window.isOpen()){
+    int stop = 0;
+    while(window.isOpen() && ++stop < 100){
 
         sf::Event event{};
         if(window.pollEvent(event)){
@@ -58,8 +61,8 @@ int main(){
             body.move(TIME_STEP);
         }
 
-        grid.update(bodies);
-        grid.draw(window);
+        grid->update(bodies);
+        grid->draw(window);
 
         for(const auto& body : bodies){
             body.drawSpectrum(window);

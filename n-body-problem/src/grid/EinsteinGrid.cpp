@@ -3,9 +3,9 @@
 //
 
 #include <cmath>
-#include "../includes/EinstainGrid.h"
+#include "../../includes/grid/EinsteinGrid.h"
 
-EinstainGrid::EinstainGrid(std::pair<float, float> window_size, float distance, float thickness, sf::Color color)
+EinsteinGrid::EinsteinGrid(std::pair<float, float> window_size, float distance, float thickness, sf::Color color)
     : unitDistance(distance), vertices(window_size.second / distance){
 
     int width = static_cast<int>(window_size.first / unitDistance);
@@ -20,7 +20,7 @@ EinstainGrid::EinstainGrid(std::pair<float, float> window_size, float distance, 
     }
 }
 
-void EinstainGrid::update(const std::vector<Body> &bodies) {
+void EinsteinGrid::update(const std::vector<Body>& bodies) {
     for(int y = 0; y < vertices.size(); ++y){
         for(int x = 0; x < vertices[y].size(); ++x){
             sf::Vector2f position{x * unitDistance, y * unitDistance};
@@ -52,13 +52,13 @@ void EinstainGrid::update(const std::vector<Body> &bodies) {
     }
 }
 
-bool EinstainGrid::areColliding(const sf::Vector2f position, const Body &body){
+bool EinsteinGrid::areColliding(const sf::Vector2f position, const Body &body){
     auto diff_vec = body.getPosition() - position; // [distance_units] -> vector
     auto distance = std::sqrt(std::pow(diff_vec.x, 2) + std::pow(diff_vec.y, 2)); // [distance_units] -> vector
     return distance < body.getRadius();
 }
 
-void EinstainGrid::draw(sf::RenderWindow & window){
+void EinsteinGrid::draw(sf::RenderWindow & window){
     for(int y = 0; y < vertices.size(); ++y){
         for(int x = 0; x < vertices[y].size() - 1; ++x){
             sf::Vertex line[] =
