@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME}
         src/Body.cpp
         src/LinearSpectrum.cpp
         src/MassCenter.cpp
-        src/SpaceGrid.cpp
+        src/PotentialGrid.cpp
         )
 
 target_link_libraries(${PROJECT_NAME} -lsfml-window -lsfml-graphics -lsfml-system)

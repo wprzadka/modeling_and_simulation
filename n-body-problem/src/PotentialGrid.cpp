@@ -2,10 +2,10 @@
 // Created by viking on 09.11.2020.
 //
 
-#include "../includes/SpaceGrid.h"
+#include "../includes/PotentialGrid.h"
 
-SpaceGrid::SpaceGrid(std::pair<float, float> window_size, float distance,
-                     float thickness, sf::Color color) :
+PotentialGrid::PotentialGrid(std::pair<float, float> window_size, float distance,
+                             float thickness, sf::Color color) :
                      lines(window_size.first + window_size.second / distance) {
     int width = static_cast<int>(window_size.first / distance);
     int height = static_cast<int>(window_size.second / distance);
@@ -26,7 +26,7 @@ SpaceGrid::SpaceGrid(std::pair<float, float> window_size, float distance,
     }
 }
 
-void SpaceGrid::draw(sf::RenderWindow & window) {
+void PotentialGrid::draw(sf::RenderWindow & window) {
     for(const auto& rect : lines){
         window.draw(rect);
     }

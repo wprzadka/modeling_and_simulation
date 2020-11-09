@@ -6,7 +6,7 @@
 #include "includes/Body.h"
 #include "includes/LinearSpectrum.h"
 #include "includes/MassCenter.h"
-#include "includes/SpaceGrid.h"
+#include "includes/PotentialGrid.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
@@ -28,7 +28,7 @@ int main(){
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    SpaceGrid grid{window_size, 100, 2, sf::Color(60, 60, 60)};
+    PotentialGrid grid{window_size, 100, 2, sf::Color(60, 60, 60)};
 
     while(window.isOpen()){
 
