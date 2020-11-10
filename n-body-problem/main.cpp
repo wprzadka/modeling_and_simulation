@@ -9,27 +9,28 @@
 #include "includes/grid/Grid.h"
 #include "includes/grid/MetricGrid.h"
 #include "includes/grid/EinsteinGrid.h"
+#include "includes/grid/VectorsGrid.h"
 #include "includes/Constants.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
 
-static const int TIME_STEP = 10;                          // [s] amount of time in one iteration
+static const int TIME_STEP = 1;                          // [s] amount of time in one iteration
 
 int main(){
 
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e22, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 120,
+    std::unique_ptr<Grid> grid = std::make_unique<VectorsGrid>(window_size, 20,
                                                               sf::Color(60, 60, 60));
 
     while(window.isOpen()){
