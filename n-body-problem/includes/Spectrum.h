@@ -9,10 +9,9 @@
 class Spectrum {
 
 public:
+    virtual ~Spectrum(){};
     virtual void draw (sf::RenderWindow& window) = 0;
-
     virtual void setColor(const sf::Color&) = 0;
-
     virtual void addPosition(sf::Vector2f position) = 0;
 };
 

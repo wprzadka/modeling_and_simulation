@@ -11,9 +11,7 @@
 class Grid {
 
 public:
-    Grid(){};
     virtual ~Grid(){};
-
     virtual void update(const std::vector<Body>&){};
     virtual void draw(sf::RenderWindow& window) = 0;
 };

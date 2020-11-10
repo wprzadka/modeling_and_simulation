@@ -15,11 +15,9 @@ class LinearSpectrum : public Spectrum {
 
 public:
     LinearSpectrum();
-
+    ~LinearSpectrum() = default;
     void draw (sf::RenderWindow& window);
-
     void setColor(const sf::Color&);
-
     void addPosition(sf::Vector2f position);
 };
 
