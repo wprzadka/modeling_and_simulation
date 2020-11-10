@@ -8,7 +8,7 @@ include_directories(include)
 add_executable(${PROJECT_NAME}
         main.cpp
         src/Body.cpp
-        src/spectrum/LinearSpectrum.cpp
+        src/spectrum/InfinitySpectrum.cpp
         src/MassCenter.cpp
         src/grid/MetricGrid.cpp
         src/grid/EinsteinGrid.cpp

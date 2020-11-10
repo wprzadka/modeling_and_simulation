@@ -9,13 +9,13 @@
 #include <SFML/Graphics.hpp>
 #include "Spectrum.h"
 
-class LinearSpectrum : public Spectrum {
+class InfinitySpectrum : public Spectrum {
     sf::VertexArray points;
     sf::Color color;
 
 public:
-    LinearSpectrum();
-    ~LinearSpectrum() override = default;
+    InfinitySpectrum();
+    ~InfinitySpectrum() override = default;
     void draw (sf::RenderWindow& window) override;
     void setColor(const sf::Color&) override;
     void addPosition(sf::Vector2f position) override;

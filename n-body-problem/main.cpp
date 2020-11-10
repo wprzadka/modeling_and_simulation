@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "includes/Body.h"
-#include "includes/spectrum/LinearSpectrum.h"
+#include "includes/spectrum/InfinitySpectrum.h"
 #include "includes/MassCenter.h"
 #include "includes/grid/Grid.h"
 #include "includes/grid/MetricGrid.h"
@@ -22,9 +22,9 @@ int main(){
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<InfinitySpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<InfinitySpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<InfinitySpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
