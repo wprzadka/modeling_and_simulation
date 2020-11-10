@@ -11,6 +11,7 @@
 #include "includes/grid/EinsteinGrid.h"
 #include "includes/grid/VectorsGrid.h"
 #include "includes/Constants.h"
+#include "includes/spectrum/ListSpectrum.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
@@ -22,9 +23,15 @@ int main(){
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<InfinitySpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<InfinitySpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<InfinitySpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10,{630, 450},
+                                       sf::Color(255, 100, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350},
+                                       sf::Color(100, 255, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250},
+                                       sf::Color(100, 100, 255),
+                                       std::make_unique<ListSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);

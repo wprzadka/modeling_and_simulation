@@ -12,6 +12,8 @@ add_executable(${PROJECT_NAME}
         src/MassCenter.cpp
         src/grid/MetricGrid.cpp
         src/grid/EinsteinGrid.cpp
-        src/grid/VectorsGrid.cpp)
+        src/grid/VectorsGrid.cpp
+        src/spectrum/ListSpectrum.cpp
+        )
 
 target_link_libraries(${PROJECT_NAME} -lsfml-window -lsfml-graphics -lsfml-system)
