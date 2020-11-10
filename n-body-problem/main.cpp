@@ -15,6 +15,7 @@
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
+static bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance = 1);
 
 static const int TIME_STEP = 1;                          // [s] amount of time in one iteration
 
@@ -48,6 +49,9 @@ int main(){
             }
         }
         window.clear();
+        for(auto& body : bodies){
+            body.clearAcceleration();
+        }
         for(int k = 0; k < bodies.size(); ++k){
             for(int m = k + 1; m < bodies.size(); ++m){
                 if(!areColliding(bodies[k], bodies[m])){
@@ -62,11 +66,17 @@ int main(){
         }
         grid->update(bodies);
         grid->draw(window);
+
         for(const auto& body : bodies){
             body.drawSpectrum(window);
         }
         for(const auto& body : bodies){
             body.draw(window);
+        }
+        for(auto& body : bodies){
+            if(isMouseCursorOn(body, window, 20)){
+                body.showDescription(window);
+            }
         }
         center.draw(window);
         window.display();
@@ -90,4 +100,10 @@ bool areColliding(const Body &first, const Body &second){
     auto diff_vec = first.getPosition() - second.getPosition(); // [distance_units] -> vector
     auto distance = std::sqrt(std::pow(diff_vec.x, 2) + std::pow(diff_vec.y, 2)); // [distance_units] -> vector
     return distance < first.getRadius() + second.getRadius();
+}
+
+bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance){
+    auto diff_vec = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)) - target.getPosition(); // [distance_units] -> vector
+    auto distance = std::sqrt(std::pow(diff_vec.x, 2) + std::pow(diff_vec.y, 2)); // [distance_units] -> vector
+    return distance < target.getRadius() + aproxDistance;
 }

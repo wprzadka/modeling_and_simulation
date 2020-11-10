@@ -16,12 +16,15 @@ class Body {
     sf::CircleShape shape;
     std::unique_ptr<Spectrum> positionSpectrum = nullptr;
 
+    sf::Font font;
+    sf::Text description;
+
 public:
 //    Body(double mass, int radius);
     Body(double mass, float radius, sf::Vector2f position);
     Body(double mass, float radius, sf::Vector2f position, sf::Color color,
          std::unique_ptr<Spectrum> spectrum = nullptr);
-    Body(const Body& original);
+//    Body(const Body& original);
     Body(Body&& original) noexcept;
     virtual ~Body() = default;
 
@@ -34,6 +37,11 @@ public:
     double getMass() const noexcept { return mass; };
     sf::Vector2f getPosition() const noexcept { return shape.getPosition(); };
     float getRadius() const noexcept { return shape.getRadius(); };
+
+    void showDescription(sf::RenderWindow& window);
+
+private:
+    void updateDescription();
 };
 
 
