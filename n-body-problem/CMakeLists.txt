@@ -12,6 +12,6 @@ add_executable(${PROJECT_NAME}
         src/MassCenter.cpp
         src/grid/MetricGrid.cpp
         src/grid/EinsteinGrid.cpp
-        )
+        includes/Constants.h)
 
 target_link_libraries(${PROJECT_NAME} -lsfml-window -lsfml-graphics -lsfml-system)

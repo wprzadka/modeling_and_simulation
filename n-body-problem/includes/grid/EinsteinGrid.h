@@ -9,19 +9,17 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
+#include "../Constants.h"
 
 class EinsteinGrid : public Grid{
 
 private:
-    const long double GRAVITATIONAL_CONST = 6.674e-11; // [m^3⋅kg^−1⋅s^−2]
-    const long double DISTANCE_UNIT = 1e6;             // [m] 1 distance unit = 10^6 m
-
     float unitDistance;
     std::vector<std::vector<sf::Vertex>> vertices;
+    sf::Color color;
 
 public:
-    EinsteinGrid(std::pair<float, float> window_size, float distance, float thickness = 1,
-                 sf::Color color = sf::Color::White);
+    EinsteinGrid(std::pair<float, float> window_size, float distance, sf::Color color = sf::Color::White);
 
     void update(const std::vector<Body>& bodies);
     void draw(sf::RenderWindow & window);

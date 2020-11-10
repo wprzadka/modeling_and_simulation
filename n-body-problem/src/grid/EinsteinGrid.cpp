@@ -5,8 +5,8 @@
 #include <cmath>
 #include "../../includes/grid/EinsteinGrid.h"
 
-EinsteinGrid::EinsteinGrid(std::pair<float, float> window_size, float distance, float thickness, sf::Color color)
-    : unitDistance(distance), vertices(window_size.second / distance){
+EinsteinGrid::EinsteinGrid(std::pair<float, float> window_size, float distance, sf::Color color)
+    : unitDistance(distance), vertices(window_size.second / distance), color(color){
 
     int width = static_cast<int>(window_size.first / unitDistance);
     int height = static_cast<int>(window_size.second / unitDistance);
@@ -46,7 +46,7 @@ void EinsteinGrid::update(const std::vector<Body>& bodies) {
             }
             vertices[y][x] = sf::Vertex{
                     position + changePosition,
-                    sf::Color(40, 80, 40)
+                    color
             };
         }
     }

@@ -9,12 +9,11 @@
 #include "includes/grid/Grid.h"
 #include "includes/grid/MetricGrid.h"
 #include "includes/grid/EinsteinGrid.h"
+#include "includes/Constants.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
 
-static const long double GRAVITATIONAL_CONST = 6.674e-11; // [m^3⋅kg^−1⋅s^−2]
-static const long double DISTANCE_UNIT = 1e6;             // [m] 1 distance unit = 10^6 m
 static const int TIME_STEP = 10;                          // [s] amount of time in one iteration
 
 int main(){
@@ -30,11 +29,10 @@ int main(){
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 50, 2,
-                                                                sf::Color(60, 60, 60));
+    std::unique_ptr<Grid> grid = std::make_unique<EinsteinGrid>(window_size, 50,
+                                                              sf::Color(60, 60, 60));
 
-    int stop = 0;
-    while(window.isOpen() && ++stop < 100){
+    while(window.isOpen()){
 
         sf::Event event{};
         if(window.pollEvent(event)){

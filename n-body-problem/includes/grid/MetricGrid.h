@@ -16,8 +16,8 @@ class MetricGrid : public Grid {
     std::vector<sf::RectangleShape> lines;
 
 public:
-    MetricGrid(std::pair<float, float> window_size, float distance,
-               float thickness = 1, sf::Color color = sf::Color::White);
+    MetricGrid(std::pair<float, float> window_size, float distance, sf::Color color = sf::Color::White,
+               float thickness = 1);
     void update(const std::vector<Body>&){};
     void draw(sf::RenderWindow& window);
 };

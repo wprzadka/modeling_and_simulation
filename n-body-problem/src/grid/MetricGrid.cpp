@@ -4,7 +4,7 @@
 
 #include "../../includes/grid/MetricGrid.h"
 
-MetricGrid::MetricGrid(std::pair<float, float> window_size, float distance, float thickness, sf::Color color)
+MetricGrid::MetricGrid(std::pair<float, float> window_size, float distance, sf::Color color, float thickness)
     : lines(window_size.first + window_size.second / distance) {
 
     int width = static_cast<int>(window_size.first / distance);
