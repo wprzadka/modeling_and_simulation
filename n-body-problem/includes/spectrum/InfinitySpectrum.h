@@ -2,8 +2,8 @@
 // Created by viking on 24.10.20.
 //
 
-#ifndef N_BODY_PROBLEM_LINEAR_VIDMO_H
-#define N_BODY_PROBLEM_LINEAR_VIDMO_H
+#ifndef N_BODY_PROBLEM_INFINITYSPECTRUM_H
+#define N_BODY_PROBLEM_INFINITYSPECTRUM_H
 
 
 #include <SFML/Graphics.hpp>
@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif //N_BODY_PROBLEM_LINEAR_VIDMO_H
+#endif //N_BODY_PROBLEM_INFINITYSPECTRUM_H
