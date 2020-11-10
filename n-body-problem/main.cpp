@@ -4,13 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "includes/Body.h"
-#include "includes/LinearSpectrum.h"
+#include "includes/spectrum/InfinitySpectrum.h"
 #include "includes/MassCenter.h"
 #include "includes/grid/Grid.h"
 #include "includes/grid/MetricGrid.h"
 #include "includes/grid/EinsteinGrid.h"
 #include "includes/grid/VectorsGrid.h"
 #include "includes/Constants.h"
+#include "includes/spectrum/ListSpectrum.h"
 
 static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
 static bool areColliding(const Body& first, const Body& second);
@@ -22,9 +23,15 @@ int main(){
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {630, 450}, sf::Color(255, 100, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350}, sf::Color(100, 255, 100), std::make_unique<LinearSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250}, sf::Color(100, 100, 255), std::make_unique<LinearSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10,{630, 450},
+                                       sf::Color(255, 100, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350},
+                                       sf::Color(100, 255, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250},
+                                       sf::Color(100, 100, 255),
+                                       std::make_unique<ListSpectrum>()}));
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
@@ -34,35 +41,27 @@ int main(){
                                                               sf::Color(60, 60, 60));
 
     while(window.isOpen()){
-
         sf::Event event{};
         if(window.pollEvent(event)){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
         }
-
         window.clear();
-
         for(int k = 0; k < bodies.size(); ++k){
             for(int m = k + 1; m < bodies.size(); ++m){
-
                 if(!areColliding(bodies[k], bodies[m])){
                     sf::Vector2<long double> force = calculateForce(bodies[k], bodies[m]);
-
                     bodies[k].addForce(-force);
                     bodies[m].addForce(force);
                 }
             }
         }
-
         for(auto& body : bodies){
             body.move(TIME_STEP);
         }
-
         grid->update(bodies);
         grid->draw(window);
-
         for(const auto& body : bodies){
             body.drawSpectrum(window);
         }
@@ -70,7 +69,6 @@ int main(){
             body.draw(window);
         }
         center.draw(window);
-
         window.display();
     }
     return 0;
