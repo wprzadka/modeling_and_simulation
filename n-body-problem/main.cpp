@@ -29,7 +29,7 @@ int main(){
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    std::unique_ptr<Grid> grid = std::make_unique<EinsteinGrid>(window_size, 50,
+    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 120,
                                                               sf::Color(60, 60, 60));
 
     while(window.isOpen()){
