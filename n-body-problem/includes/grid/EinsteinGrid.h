@@ -20,7 +20,7 @@ private:
 
 public:
     EinsteinGrid(std::pair<float, float> window_size, float distance, sf::Color color = sf::Color::White);
-
+    ~EinsteinGrid() = default;
     void update(const std::vector<Body>& bodies);
     void draw(sf::RenderWindow & window);
 
