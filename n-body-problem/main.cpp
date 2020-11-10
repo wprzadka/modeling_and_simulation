@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "includes/Body.h"
-#include "includes/LinearSpectrum.h"
+#include "includes/spectrum/LinearSpectrum.h"
 #include "includes/MassCenter.h"
 #include "includes/grid/Grid.h"
 #include "includes/grid/MetricGrid.h"
@@ -34,35 +34,27 @@ int main(){
                                                               sf::Color(60, 60, 60));
 
     while(window.isOpen()){
-
         sf::Event event{};
         if(window.pollEvent(event)){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
         }
-
         window.clear();
-
         for(int k = 0; k < bodies.size(); ++k){
             for(int m = k + 1; m < bodies.size(); ++m){
-
                 if(!areColliding(bodies[k], bodies[m])){
                     sf::Vector2<long double> force = calculateForce(bodies[k], bodies[m]);
-
                     bodies[k].addForce(-force);
                     bodies[m].addForce(force);
                 }
             }
         }
-
         for(auto& body : bodies){
             body.move(TIME_STEP);
         }
-
         grid->update(bodies);
         grid->draw(window);
-
         for(const auto& body : bodies){
             body.drawSpectrum(window);
         }
@@ -70,7 +62,6 @@ int main(){
             body.draw(window);
         }
         center.draw(window);
-
         window.display();
     }
     return 0;

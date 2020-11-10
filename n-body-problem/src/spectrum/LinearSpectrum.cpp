@@ -3,7 +3,7 @@
 //
 
 
-#include "../includes/LinearSpectrum.h"
+#include "../../includes/spectrum/LinearSpectrum.h"
 
 LinearSpectrum::LinearSpectrum(): points(sf::Lines), color(0, 0, 0) {
 }

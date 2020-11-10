@@ -7,7 +7,7 @@
 
 
 #include <SFML/Graphics.hpp>
-#include "Spectrum.h"
+#include "spectrum/Spectrum.h"
 
 class Body {
     double mass;
