@@ -11,13 +11,11 @@
 
 class InfinitySpectrum : public Spectrum {
     sf::VertexArray points;
-    sf::Color color;
 
 public:
     InfinitySpectrum();
     ~InfinitySpectrum() override = default;
     void draw (sf::RenderWindow& window) override;
-    void setColor(const sf::Color&) override;
     void addPosition(sf::Vector2f position) override;
 };
 
