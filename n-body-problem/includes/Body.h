@@ -8,16 +8,16 @@
 
 #include <SFML/Graphics.hpp>
 #include "spectrum/Spectrum.h"
+#include "Description.h"
 
 class Body {
     double mass;
     sf::Vector2<long double> velocity{0, 0};
     sf::Vector2<long double> acceleration{0, 0};
+
     sf::CircleShape shape;
     std::unique_ptr<Spectrum> positionSpectrum = nullptr;
-
-    sf::Font font;
-    sf::Text description;
+    Description description;
 
 public:
 //    Body(double mass, int radius);
@@ -39,9 +39,6 @@ public:
     float getRadius() const noexcept { return shape.getRadius(); };
 
     void showDescription(sf::RenderWindow& window);
-
-private:
-    void updateDescription();
 };
 
 
