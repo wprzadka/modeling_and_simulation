@@ -8,21 +8,24 @@
 #include <SFML/Graphics.hpp>
 
 class Description {
-    sf::Vector2f descriptionPosition;
-    bool isActive = false;
-
     sf::Font font;
     sf::Text description;
+    sf::CircleShape triangleMarker;
 
 public:
+    bool isActive = false;
+    bool isAsideFromWindow = false;
+
     Description();
-    Description(Description&&);
+    Description(const sf::Color&);
+    Description(Description&&) noexcept;
 
     void draw(sf::RenderWindow& window);
     void update(
             const sf::Vector2f& position,
             const sf::Vector2f& velocity,
-            const sf::Vector2f& acceleration
+            const sf::Vector2f& acceleration,
+            const sf::RenderWindow& window
             );
 };
 

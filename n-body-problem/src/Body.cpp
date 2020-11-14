@@ -13,7 +13,7 @@ Body::Body(double mass, float radius, sf::Vector2f position)
 }
 
 Body::Body(double mass, float radius, sf::Vector2f position, sf::Color color, std::unique_ptr<Spectrum> spectrum)
-        : mass(mass), shape(radius), positionSpectrum(std::move(spectrum)), description() {
+        : mass(mass), shape(radius), positionSpectrum(std::move(spectrum)), description(color) {
 
     shape.setOrigin(radius, radius);
     shape.setPosition(position);
@@ -59,6 +59,18 @@ void Body::showDescription(sf::RenderWindow& window){
     description.update(
             shape.getPosition(),
             static_cast<sf::Vector2f>(velocity),
-            static_cast<sf::Vector2f>(acceleration));
+            static_cast<sf::Vector2f>(acceleration),
+            window);
     description.draw(window);
+}
+
+void Body::makeDescriptionActiveOnAsideFromWindow(const sf::Vector2<unsigned int> &winSize) {
+    if(!isDescriptionActive() && isAsideFromWindow(winSize)){
+        setDescriptionActive(true);
+    }
+}
+
+bool Body::isAsideFromWindow(const sf::Vector2<unsigned int> &winSize) {
+    auto pos = shape.getPosition();
+    return pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y;
 }

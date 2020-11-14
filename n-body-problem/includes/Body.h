@@ -39,6 +39,10 @@ public:
     float getRadius() const noexcept { return shape.getRadius(); };
 
     void showDescription(sf::RenderWindow& window);
+    bool isDescriptionActive() const noexcept { return description.isActive; };
+    void setDescriptionActive(bool active){ description.isActive = active; };
+    void makeDescriptionActiveOnAsideFromWindow(const sf::Vector2<unsigned int> &winSize);
+    bool isAsideFromWindow(const sf::Vector2<unsigned int> &winSize);
 };
 
 

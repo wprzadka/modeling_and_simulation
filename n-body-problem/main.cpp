@@ -38,14 +38,24 @@ int main(){
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
-    std::unique_ptr<Grid> grid = std::make_unique<VectorsGrid>(window_size, 20,
+    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20,
                                                               sf::Color(60, 60, 60));
 
     while(window.isOpen()){
         sf::Event event{};
         if(window.pollEvent(event)){
-            if(event.type == sf::Event::Closed){
-                window.close();
+            switch(event.type){
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::MouseButtonPressed:
+                    if(event.mouseButton.button == sf::Mouse::Left){
+                        for(auto& body : bodies){
+                            if(isMouseCursorOn(body, window, 20)){
+                                body.setDescriptionActive(!body.isDescriptionActive());
+                            }
+                        }
+                    }
             }
         }
         window.clear();
@@ -70,12 +80,14 @@ int main(){
         for(const auto& body : bodies){
             body.drawSpectrum(window);
         }
-        for(const auto& body : bodies){
+        for(auto& body : bodies){
             body.draw(window);
         }
         for(auto& body : bodies){
-            if(isMouseCursorOn(body, window, 20)){
+            if(body.isDescriptionActive() || isMouseCursorOn(body, window, 20)){
                 body.showDescription(window);
+            }else{
+                body.makeDescriptionActiveOnAsideFromWindow(window.getSize());
             }
         }
         center.draw(window);
