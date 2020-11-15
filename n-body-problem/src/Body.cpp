@@ -4,6 +4,7 @@
 #include <random>
 #include <sstream>
 #include "../includes/Body.h"
+#include "../includes/Constants.h"
 
 Body::Body(double mass, float radius, sf::Vector2f position)
     : mass(mass), shape(radius), description() {
@@ -49,7 +50,8 @@ void  Body::addForce(sf::Vector2<long double> force) {
 
 void Body::move(float time_step) {
     velocity += acceleration * static_cast<long double>(time_step); // [m⋅s^-1]
-    shape.move(static_cast<sf::Vector2f>(velocity) * time_step); // [m]
+    auto positionDiff = static_cast<sf::Vector2f>(velocity) * time_step; // [m]
+    shape.move(positionDiff / static_cast<float>(DISTANCE_UNIT)); // [unit]
 
     if(positionSpectrum != nullptr) {
         positionSpectrum->addPosition(shape.getPosition());
