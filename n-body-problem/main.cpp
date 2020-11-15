@@ -74,6 +74,7 @@ int main(){
     int drawingInterval = 256;
 //    int drawingInterval = 4096;
 //    int drawingInterval = 16384;
+//    int drawingInterval = 32768;
 
     while(window.isOpen()){
         sf::Event event{};
@@ -126,6 +127,7 @@ int main(){
         if(isDrawingEverytime || static_cast<int>(totalTime) % drawingInterval == 0) {
 
             grid->update(bodies);
+            center.findMassCenter(bodies);
 
             window.clear();
             grid->draw(window);
