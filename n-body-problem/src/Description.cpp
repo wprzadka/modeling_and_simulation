@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <sstream>
+#include <cmath>
 #include "../includes/Description.h"
 #include "../includes/Constants.h"
 
@@ -58,21 +59,32 @@ void Description::update(
     data.precision(0);
     data << std::scientific;
     data.precision(1);
-    data << "velocity: ("
-         << velocity.x << ", "
-         << velocity.y << ") [m/s]\n";
-    data << "acceleration: ("
-         << acceleration.x << ", "
-         << acceleration.y << ") [m/s^2]\n";
-    data << "force: ("
-         << acceleration.x * mass << ", "
-         << acceleration.y * mass << ") [N]\n";
+    data << "velocity: "
+         << sqrt(pow(velocity.x, 2) + pow(velocity.y, 2))
+         << " [m/s]\n";
+    data << "acceleration: "
+        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2))
+        << " [m/s^2]\n";
+    data << "force: "
+        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2) * pow(mass, 2))
+        << " [N]\n";
+//    data << "velocity: ("
+//         << velocity.x << ", "
+//         << velocity.y << ") [m/s]\n";
+//    data << "acceleration: ("
+//         << acceleration.x << ", "
+//         << acceleration.y << ") [m/s^2]\n";
+//    data << "force: ("
+//         << acceleration.x * mass << ", "
+//         << acceleration.y * mass << ") [N]\n";
     description.setString(data.str());
 
     float xPos = position.x;
     float yPos = position.y;
     float markerXPos = position.x;
     float markerYPos = position.y;
+    isAsideFromWindow = false;
+
     float distance = 50;
 
     if(position.x < 0){
