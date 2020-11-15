@@ -59,14 +59,14 @@ void Description::update(
     data << std::scientific;
     data.precision(1);
     data << "velocity: ("
-         << velocity.x * DISTANCE_UNIT << ", "
-         << velocity.y * DISTANCE_UNIT << ")\n";
+         << velocity.x << ", "
+         << velocity.y << ") [m/s]\n";
     data << "acceleration: ("
-         << acceleration.x * DISTANCE_UNIT << ", "
-         << acceleration.y * DISTANCE_UNIT << ")\n";
+         << acceleration.x << ", "
+         << acceleration.y << ") [m/s^2]\n";
     data << "force: ("
-         << acceleration.x * DISTANCE_UNIT * mass << ", "
-         << acceleration.y * DISTANCE_UNIT * mass << ")\n";
+         << acceleration.x * mass << ", "
+         << acceleration.y * mass << ") [N]\n";
     description.setString(data.str());
 
     float xPos = position.x;
