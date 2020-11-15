@@ -1,0 +1,124 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage{polski}
+
+\usepackage{amsmath}
+\usepackage{listings}
+
+\title{Problem n-ciał}
+\author{Wiktor Przadka}
+\date{November 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Model}
+
+\begin{frame}{Wstęp}
+    \begin{block}{Opis Problemu}
+        Problem n-ciał polega na przewidywaniu toru ruchu planet w przestrzeni kosmicznej. Rozwiązanie problemu można sprowadzić do rozwiązania układu równań różniczkowych zwyczajnych.
+    \end{block}
+    \begin{block}{Motywacja}
+        Motywacją problemu jest chęć zrozumienia ruchu skomplikowanych formacji ciał, takich jak galaktyki i możliwość przewidzenia pozycji ciał niebieskich w czasie.
+    \end{block}
+    \begin{block}{Rozwiązanie}
+        Obecnie rozwiązanie analityczne jest znane jedynie dla problemu 2-ciał. dla większej ilości ciał nie znamy żadnych analitycznych metod rozwiązania układu równań opisujących ruch ciał. Z tego powodu musimy używać rozwiązań numerycznych.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Model matematyczny}
+    \begin{block}{Układ równań grawitacyjnych Newtona}
+        Siły między ciałami o indeksach k i j opisywane są wzorami:
+        $$ F_{k,j} = G \frac{ m_{k} m_{j} }{ \| r_{k} - r_{j} \|^2 }\ \forall_{k, j \in n} $$
+        $$ \vec{F_{k,j}} 
+        = G \frac{ m_{k} m_{j} }{ \| r_{k} - r_{j} \|^2 } 
+        \Big( \frac{ r_{k} - r_{j} }{\| r_{k} - r_{j} \|} \Big) 
+        = G \frac{ m_{k} m_{j} }{ \| r_{k} - r_{j} \|^3 }(r_{k} - r_{j})\ \forall_{k, j \in n} $$
+        Gdzie:\\
+        G = $6.6743\cdot 10^{-11} [\frac{m^3}{kg \cdot s^2}]$ - stała grawitacyjna \\
+        $m_{i}$ - masa i-tego ciała [kg]\\
+        $r_{i}$ - pozycja i-tego ciała w przestrzeni\\
+    \end{block}
+\end{frame}
+
+\begin{frame}{Model matematyczny}
+    \begin{block}{Układ równań różniczkowych zwyczajnych}
+        Siła dla ciała o indeksie k opisana jest wzorem:
+        $$ F_{k} 
+        = m_{k} a_{k} 
+        = m_{k} \frac{\partial v}{\partial t} 
+        = m_{k} \frac{\partial^2 x}{\partial t^2} $$
+        \qquad\qquad\qquad\qquad\qquad ,więc:
+        $$ \vec{F_{k}}
+        = \sum_{j = 0}^{n} G \frac{ m_{k} m_{j} }{ \| x_{k} - x_{j} \|^3 }(x_{k} - x_{j})$$
+        
+        $$ m_{k} \frac{\partial^2 x_{k}}{\partial t^2}
+        = G\cdot \sum_{j = 0}^{n} \frac{ m_{k} m_{j} }{ \| x_{k} - x_{j} \|^3 }(x_{k} - x_{j})$$
+        
+        $$ \frac{\partial^2 x_{k}}{\partial t^2}
+        = G\cdot \sum_{j = 0}^{n} \frac{ m_{j} }{ \| x_{k} - x_{j} \|^3 }(x_{k} - x_{j})$$
+    \end{block}
+\end{frame}
+
+\begin{frame}{Model matematyczny}
+    \begin{block}{Model w postaci zmiennych stanu}
+        (1) $$ \frac{\partial x_{k}}{\partial t} = v_{k}$$
+    
+        (2) $$ \frac{\partial v_{k}}{\partial t}
+        = G\cdot \sum_{j = 0}^{n} 
+        \frac{ m_{j} }{ \| x_{k} - x_{j} \|^3 }
+        (x_{k} - x_{j})$$
+    \end{block}
+    \begin{block}{(*)}
+        Jest to model, użyty w symulacji przedstawionej w kolejnej sekcji    
+    \end{block}
+\end{frame}
+
+\section{Symulacja}
+
+\begin{frame}{Symulacja}
+    \begin{block}{Symulacja}
+        Symulacja została napisana w języku C++ przy użyciu bioblioteki graficznej SFML, kod dostępny jest w repozytorium na github'ie pod linkiem:\\
+        \href{https://github.com/wprzadka/modeling_and_simulation/tree/main/n-body-problem}
+        {https://github.com/wprzadka/modeling\_and\_simulation/tree/main/\\n-body-problem}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Symulacja}
+    \begin{block}{Precyzja obliczeń}
+        Wszelkie obliczenia oraz stałe wykorzystywane w symulacji są zapisane w zmiennych o dużej precyzji - long double
+    \end{block}
+    \begin{block}{Niedokładności symulacji}
+        Wszelkie niedokładności w symulacji wynikają z ograniczonej precyzji zmiennych wykorzystywanych do obliczeń oraz niedokładności metody Eulera wykorzystywanej do rozwiązywania układu równań różniczkowych zwyczajnych.
+    \end{block}
+\end{frame}
+
+\section{walidacja}
+
+\begin{frame}{Walidacja}
+    \begin{block}{Środek masy systemu}
+        Z zasady zachowania momentu pędu wynika, że środek masy systemu izolowanego od zewnętrznych sił może poruszać się jedynie ze stałą prędkością. Oznacza to, że jeśli w chwili rozpoczęcia symulacji $t_{0}$ ciała są w spoczynku to w każdym momencie czasu symulacji $t_{i}$ koordynaty środka ciężkości systemu muszą być położone w jednym punkcie.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Walidacja}
+    \begin{block}{Siła między Ziemią a Słońcem}
+        $F_{z,s} = G\cdot \frac{m_{z}\cdot m_{s}}{distance(z,s)^2} 
+        = 6.6743\cdot 10^{-11}\cdot 
+        \frac{5.972\cdot 10^{24}\cdot 1.989\cdot 10^{30}}
+        {(1.496 * 10^{11})^2} = 3.5423961\cdot 10^{22}$
+    \end{block}
+    
+    \begin{block}{Ruch Ziemi wokół Słońca}
+        Dystans między środkami masy ziemi i słońca wynosi $r_z = 1.496e11\ [m]$.\\
+        Ziemia pokonuje więc $d_z = 2 \pi \cdot 1.496\cdot 10^{11} [m] = 9.39488\cdot 10^{11} [m]$\\
+        w czasie $T_z = 365.25 [dni] = 365.25\cdot 24\cdot 60\cdot 60 [s] = 3.15576\cdot 10^{7} [s]$.
+        Co daje średnią szybkość ruchu ziemi równą
+        $v_z = d_z / T_z 
+        = \frac{9.39488\cdot 10^{11}}{3.15576\cdot 10^{7}} 
+        = 2.97705782442\cdot 10^{4} [\frac{m}{s}]$
+    \end{block}
+\end{frame}
+
+\end{document}
