@@ -43,12 +43,13 @@ void Body::drawSpectrum(sf::RenderWindow& window) const{
 }
 
 void  Body::addForce(sf::Vector2<long double> force) {
-    acceleration += force / static_cast<long double>(mass);
+    // force [N = kg⋅m⋅s^-2]
+    acceleration += force / static_cast<long double>(mass); // [m⋅s^-2]
 }
 
 void Body::move(float time_step) {
-    velocity += acceleration * static_cast<long double>(time_step);
-    shape.move(static_cast<sf::Vector2f>(velocity) * time_step);
+    velocity += acceleration * static_cast<long double>(time_step); // [m⋅s^-1]
+    shape.move(static_cast<sf::Vector2f>(velocity) * time_step); // [m]
 
     if(positionSpectrum != nullptr) {
         positionSpectrum->addPosition(shape.getPosition());
