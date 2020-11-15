@@ -17,6 +17,7 @@ MassCenter::MassCenter(const std::vector<Body>& bodies, float size) : MassCenter
 }
 
 long double MassCenter::calculateTotalMass(const std::vector<Body>& bodies) {
+    totalMassOfSystem = 0;
     for(const auto& body : bodies){
         totalMassOfSystem += body.getMass();
     }
@@ -24,6 +25,7 @@ long double MassCenter::calculateTotalMass(const std::vector<Body>& bodies) {
 }
 
 sf::Vector2<double> MassCenter::findMassCenter(const std::vector<Body>& bodies) {
+    massCenterPosition = sf::Vector2<double>{0, 0};
     for(const auto& body : bodies){
         massCenterPosition += body.getMass() * sf::Vector2<double>(body.getPosition());
     }
