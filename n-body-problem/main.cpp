@@ -17,33 +17,46 @@ static sf::Vector2<long double> calculateForce(const Body &first, const Body &se
 static bool areColliding(const Body& first, const Body& second);
 static bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance = 1);
 
-static const int TIME_STEP = 1;                          // [s] amount of time in one iteration
+static const float TIME_STEP = 1;                          // [s] amount of time in one iteration
+static float totalTime = 0;
 
 int main(){
 
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
+
+//  Earth - Moon system
     bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 450},
                                        sf::Color(255, 100, 100),
-                                       std::make_unique<ListSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e22, 5, {600, 350},
+                                       std::make_unique<ListSpectrum>()})); // Earth
+    bodies.emplace_back(std::move(Body{7.34767309e22, 2, {600 + 384.4, 450},
                                        sf::Color(100, 255, 100),
-                                       std::make_unique<ListSpectrum>()}));
+                                       std::make_unique<InfinitySpectrum>()})); // Moon
+    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 1.022e3});
+
+//  Three bodies
     /*
-    bodies.emplace_back(std::move(Body{5.972e22, 5, {600, 250},
+    bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 400},
+                                       sf::Color(255, 100, 100),
+                                       std::make_unique<ListSpectrum>()})); // Earth
+    bodies.emplace_back(std::move(Body{7.34767309e24, 10, {650, 450},
+                                       sf::Color(100, 255, 100),
+                                       std::make_unique<ListSpectrum>()})); // Moon
+    bodies.emplace_back(std::move(Body{5.972e24, 10, {550, 500},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<ListSpectrum>()}));
     */
-    bodies[1].setInitialVelocity(sf::Vector2<long double>{2, 0});
-    //bodies[2].setInitialVelocity(sf::Vector2<long double>{-1.5, 0});
-
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
     MassCenter center{bodies, 2};
     std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20,
                                                               sf::Color(60, 60, 60));
+
+    bool isSimulationRunning = true;
+    bool isDrawingEverytime;
+    int drawingInterval = 4096;
 
     while(window.isOpen()){
         sf::Event event{};
@@ -60,42 +73,59 @@ int main(){
                             }
                         }
                     }
+                case sf::Event::KeyPressed:
+                    if(event.key.code == sf::Keyboard::P){
+                        printf("Pause\n");
+                        printf("total time: %f\n", totalTime);
+                        isSimulationRunning = !isSimulationRunning;
+                    }
             }
         }
-        window.clear();
-        for(auto& body : bodies){
-            body.clearAcceleration();
-        }
-        for(int k = 0; k < bodies.size(); ++k){
-            for(int m = k + 1; m < bodies.size(); ++m){
-                if(!areColliding(bodies[k], bodies[m])){
-                    sf::Vector2<long double> force = calculateForce(bodies[k], bodies[m]);
-                    bodies[k].addForce(-force);
-                    bodies[m].addForce(force);
+        if(isSimulationRunning) {
+            totalTime += TIME_STEP;
+
+            for (auto &body : bodies) {
+                body.clearAcceleration();
+            }
+            for (int k = 0; k < bodies.size(); ++k) {
+                for (int m = k + 1; m < bodies.size(); ++m) {
+                    if (!areColliding(bodies[k], bodies[m])) {
+                        sf::Vector2<long double> force = calculateForce(bodies[k], bodies[m]);
+                        bodies[k].addForce(-force);
+                        bodies[m].addForce(force);
+                    }
                 }
             }
-        }
-        for(auto& body : bodies){
-            body.move(TIME_STEP);
-        }
-        grid->update(bodies);
-        grid->draw(window);
-
-        for(const auto& body : bodies){
-            body.drawSpectrum(window);
-        }
-        for(auto& body : bodies){
-            body.draw(window);
-        }
-        for(auto& body : bodies){
-            if(body.isDescriptionActive() || isMouseCursorOn(body, window, 20)){
-                body.showDescription(window);
-            }else{
-                body.makeDescriptionActiveOnAsideFromWindow(window.getSize());
+            for (auto &body : bodies) {
+                body.move(TIME_STEP);
             }
+            grid->update(bodies);
+
+            isDrawingEverytime = false;
+        }else{
+            isDrawingEverytime = true;
         }
-        center.draw(window);
-        window.display();
+
+        if(isDrawingEverytime || static_cast<int>(totalTime) % drawingInterval == 0) {
+            window.clear();
+            grid->draw(window);
+
+            for (const auto &body : bodies) {
+                body.drawSpectrum(window);
+            }
+            for (const auto &body : bodies) {
+                body.draw(window);
+            }
+            for (auto &body : bodies) {
+                if (body.isDescriptionActive() || isMouseCursorOn(body, window, 20)) {
+                    body.showDescription(window);
+                } else {
+                    body.makeDescriptionActiveOnAsideFromWindow(window.getSize());
+                }
+            }
+            center.draw(window);
+            window.display();
+        }
     }
     return 0;
 }
