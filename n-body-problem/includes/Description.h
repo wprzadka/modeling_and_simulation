@@ -23,8 +23,9 @@ public:
     void draw(sf::RenderWindow& window);
     void update(
             const sf::Vector2f& position,
-            const sf::Vector2f& velocity,
-            const sf::Vector2f& acceleration,
+            const sf::Vector2<long double>& velocity,
+            const sf::Vector2<long double>& acceleration,
+            const double& mass,
             const sf::RenderWindow& window
             );
 };

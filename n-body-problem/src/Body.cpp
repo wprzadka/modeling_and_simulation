@@ -57,9 +57,10 @@ void Body::move(float time_step) {
 
 void Body::showDescription(sf::RenderWindow& window){
     description.update(
-            shape.getPosition(),
-            static_cast<sf::Vector2f>(velocity),
-            static_cast<sf::Vector2f>(acceleration),
+            getPosition(),
+            velocity,
+            acceleration,
+            getMass(),
             window);
     description.draw(window);
 }

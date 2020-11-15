@@ -48,24 +48,25 @@ void Description::draw(sf::RenderWindow& window) {
 
 void Description::update(
         const sf::Vector2f& position,
-        const sf::Vector2f& velocity,
-        const sf::Vector2f& acceleration,
+        const sf::Vector2<long double>& velocity,
+        const sf::Vector2<long double>& acceleration,
+        const double& mass,
         const sf::RenderWindow& window
         ) {
 
     std::ostringstream data;
     data.precision(0);
     data << std::scientific;
-    data << "position: ("
-         << position.x << ", "
-         << position.y << ")\n";
     data.precision(1);
     data << "velocity: ("
          << velocity.x * DISTANCE_UNIT << ", "
          << velocity.y * DISTANCE_UNIT << ")\n";
-    data << "force: "
+    data << "acceleration: ("
          << acceleration.x * DISTANCE_UNIT << ", "
-         << acceleration.y * DISTANCE_UNIT << ")";
+         << acceleration.y * DISTANCE_UNIT << ")\n";
+    data << "force: ("
+         << acceleration.x * DISTANCE_UNIT * mass << ", "
+         << acceleration.y * DISTANCE_UNIT * mass << ")\n";
     description.setString(data.str());
 
     float xPos = position.x;
