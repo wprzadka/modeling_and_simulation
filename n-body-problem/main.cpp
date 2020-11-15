@@ -26,27 +26,41 @@ int main(){
 
     std::vector<Body> bodies{};
 
-//  Earth - Moon system
-    bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 450},
+    //  Sun - Earth system
+    // DISTANCE_UNIT = 1e9 [m]
+    /*
+    bodies.emplace_back(std::move(Body{1.989e30, 20,{600, 450},
                                        sf::Color(255, 100, 100),
                                        std::make_unique<ListSpectrum>()})); // Earth
-    bodies.emplace_back(std::move(Body{7.34767309e22, 2, {600 + 384.4, 450},
+    bodies.emplace_back(std::move(Body{5.972e24, 2, {600 + 149.6, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<InfinitySpectrum>()})); // Moon
-    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 1.022e3});
-
-//  Three bodies
+    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
+    */
+    //  Earth - Moon system
+    // DISTANCE_UNIT = 1e6 [m]
     /*
-    bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 400},
+    bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 450},
+                                       sf::Color(100, 255, 100),
+                                       std::make_unique<ListSpectrum>()})); // Earth
+    bodies.emplace_back(std::move(Body{7.34767309e22, 2, {600 + 384.4, 450},
+                                       sf::Color(100, 100, 255),
+                                       std::make_unique<InfinitySpectrum>()})); // Moon
+    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 1.022e3});
+    */
+    //  Three bodies
+    // DISTANCE_UNIT = 1e6 [m]
+
+    bodies.emplace_back(std::move(Body{5.972e24, 5,{600, 400},
                                        sf::Color(255, 100, 100),
                                        std::make_unique<ListSpectrum>()})); // Earth
-    bodies.emplace_back(std::move(Body{7.34767309e24, 10, {650, 450},
+    bodies.emplace_back(std::move(Body{7.34767309e24, 5, {650, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()})); // Moon
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {550, 500},
+    bodies.emplace_back(std::move(Body{5.972e24, 5, {550, 500},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<ListSpectrum>()}));
-    */
+
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
@@ -56,7 +70,10 @@ int main(){
 
     bool isSimulationRunning = true;
     bool isDrawingEverytime;
-    int drawingInterval = 4096;
+
+    int drawingInterval = 256;
+//    int drawingInterval = 4096;
+//    int drawingInterval = 16384;
 
     while(window.isOpen()){
         sf::Event event{};
@@ -75,9 +92,10 @@ int main(){
                     }
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::P){
-                        printf("Pause\n");
                         printf("total time: %f\n", totalTime);
                         isSimulationRunning = !isSimulationRunning;
+                        if(!isSimulationRunning)
+                            printf("Pause\n");
                     }
             }
         }
@@ -99,7 +117,6 @@ int main(){
             for (auto &body : bodies) {
                 body.move(TIME_STEP);
             }
-            grid->update(bodies);
 
             isDrawingEverytime = false;
         }else{
@@ -107,6 +124,9 @@ int main(){
         }
 
         if(isDrawingEverytime || static_cast<int>(totalTime) % drawingInterval == 0) {
+
+            grid->update(bodies);
+
             window.clear();
             grid->draw(window);
 
