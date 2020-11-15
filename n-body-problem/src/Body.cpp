@@ -74,3 +74,7 @@ bool Body::isAsideFromWindow(const sf::Vector2<unsigned int> &winSize) {
     auto pos = shape.getPosition();
     return pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y;
 }
+
+void Body::setInitialVelocity(sf::Vector2<long double> vel) noexcept {
+    velocity = vel;
+}

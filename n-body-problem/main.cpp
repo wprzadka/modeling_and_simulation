@@ -24,15 +24,19 @@ int main(){
     const std::pair<float, float> window_size{1200, 900};
 
     std::vector<Body> bodies{};
-    bodies.emplace_back(std::move(Body{5.972e24, 10,{630, 450},
+    bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 450},
                                        sf::Color(255, 100, 100),
                                        std::make_unique<ListSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {600, 350},
+    bodies.emplace_back(std::move(Body{5.972e22, 5, {600, 350},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()}));
-    bodies.emplace_back(std::move(Body{5.972e24, 10, {660, 250},
+    /*
+    bodies.emplace_back(std::move(Body{5.972e22, 5, {600, 250},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<ListSpectrum>()}));
+    */
+    bodies[1].setInitialVelocity(sf::Vector2<long double>{2, 0});
+    //bodies[2].setInitialVelocity(sf::Vector2<long double>{-1.5, 0});
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);

@@ -32,6 +32,7 @@ public:
     void drawSpectrum(sf::RenderWindow&) const;
     void addForce(sf::Vector2<long double> force);
     void move(float time_step);
+    void setInitialVelocity(sf::Vector2<long double> vel) noexcept;
 
     void clearAcceleration() noexcept { acceleration = {0, 0}; }
     double getMass() const noexcept { return mass; };
