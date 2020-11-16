@@ -6,8 +6,8 @@
 #include "../../includes/grid/VectorsGrid.h"
 #include "../../includes/Constants.h"
 
-VectorsGrid::VectorsGrid(std::pair<float, float> window_size, float distance, sf::Color color)
-    : unitDistance(distance), vertices(window_size.second / distance), color(color){
+VectorsGrid::VectorsGrid(std::pair<float, float> window_size, float distance, sf::Color color, float multiplier)
+    : unitDistance(distance), vertices(window_size.second / distance), color(color), forceMultiplier(multiplier){
 
         int width = static_cast<int>(window_size.first / unitDistance);
         int height = static_cast<int>(window_size.second / unitDistance);
@@ -36,7 +36,7 @@ void VectorsGrid::update(const std::vector<Body> & bodies) {
                 sf::Vector2f diff_vec_normalized{diff.x / norm_diff, diff.y / norm_diff}; // [-] -> vector
                 float distance_sqrt = diff_sqrt * std::pow(DISTANCE_UNIT, 2); // [m^2]
 
-                sf::Vector2f curr_change = 100.f * diff_vec_normalized * static_cast<float>(body.getMass())
+                sf::Vector2f curr_change = forceMultiplier * diff_vec_normalized * static_cast<float>(body.getMass())
                         * static_cast<float>(GRAVITATIONAL_CONST) /
                         distance_sqrt; // [kg^2⋅m^3⋅kg^−1⋅s^−2⋅m^-2] = [kg⋅m⋅s^-2] -> vector
                 changePosition +=
