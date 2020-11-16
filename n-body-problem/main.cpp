@@ -80,8 +80,9 @@ int main(){
     bodies.emplace_back(std::move(Body{7.34767309e24, 5, {600, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()}));
-
-
+//    for(auto& body : bodies){
+//        body.setInitialVelocity(sf::Vector2<long double>{1e3, 0});
+//    }
 
 
     //  Solar system
