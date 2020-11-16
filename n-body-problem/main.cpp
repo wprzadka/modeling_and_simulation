@@ -23,6 +23,7 @@ static float totalTime = 0;
 int main(){
 
     const std::pair<float, float> window_size{1200, 900};
+//    const std::pair<float, float> window_size{1920, 1080};
 
     std::vector<Body> bodies{};
 
@@ -31,10 +32,10 @@ int main(){
     /*
     bodies.emplace_back(std::move(Body{1.989e30, 20,{600, 450},
                                        sf::Color(255, 100, 100),
-                                       std::make_unique<ListSpectrum>()})); // Earth
+                                       std::make_unique<ListSpectrum>()})); // Sun
     bodies.emplace_back(std::move(Body{5.972e24, 2, {600 + 149.6, 450},
                                        sf::Color(100, 255, 100),
-                                       std::make_unique<InfinitySpectrum>()})); // Moon
+                                       std::make_unique<InfinitySpectrum>()})); // Earth
     bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
     */
     //  Earth - Moon system
@@ -50,16 +51,73 @@ int main(){
     */
     //  Three bodies
     // DISTANCE_UNIT = 1e6 [m]
-
+    /*
     bodies.emplace_back(std::move(Body{5.972e24, 5,{600, 400},
                                        sf::Color(255, 100, 100),
-                                       std::make_unique<ListSpectrum>()})); // Earth
+                                       std::make_unique<ListSpectrum>()}));
     bodies.emplace_back(std::move(Body{7.34767309e24, 5, {650, 450},
                                        sf::Color(100, 255, 100),
-                                       std::make_unique<ListSpectrum>()})); // Moon
+                                       std::make_unique<ListSpectrum>()}));
     bodies.emplace_back(std::move(Body{5.972e24, 5, {550, 500},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<ListSpectrum>()}));
+    */
+    //  Five bodies
+    // DISTANCE_UNIT = 1e6 [m]
+
+    bodies.emplace_back(std::move(Body{5.972e24, 5, {400, 650},
+                                       sf::Color(100, 150, 150),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{7.34767309e24, 5, {400, 450},
+                                       sf::Color(150, 150, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 5, {500, 300},
+                                       sf::Color(100, 100, 255),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{5.972e24, 5,{550, 500},
+                                       sf::Color(255, 100, 100),
+                                       std::make_unique<ListSpectrum>()}));
+    bodies.emplace_back(std::move(Body{7.34767309e24, 5, {600, 450},
+                                       sf::Color(100, 255, 100),
+                                       std::make_unique<ListSpectrum>()}));
+
+
+
+
+    //  Solar system
+    // DISTANCE_UNIT = 1e9 [m]
+    /*
+    bodies.emplace_back(std::move(Body{1.989e30, 28,{600, 450},
+                                       sf::Color(255, 200, 100),
+                                       std::make_unique<ListSpectrum>()})); // Sun
+
+    bodies.emplace_back(std::move(Body{3.285e23, 2, {600 + 57.91, 450},
+                                       sf::Color(120, 155, 100),
+                                       std::make_unique<InfinitySpectrum>()})); // Mercury
+
+    bodies.emplace_back(std::move(Body{4.867e24, 8, {600 + 108.2, 450},
+                                       sf::Color(250, 220, 200),
+                                       std::make_unique<InfinitySpectrum>()})); // Venus
+
+    bodies.emplace_back(std::move(Body{5.972e24, 6, {600 + 149.6, 450},
+                                       sf::Color(120, 250, 150),
+                                       std::make_unique<InfinitySpectrum>()})); // Earth
+
+    bodies.emplace_back(std::move(Body{6.39e23, 4, {600 + 227.94, 450},
+                                       sf::Color(255, 80, 50),
+                                       std::make_unique<InfinitySpectrum>()})); // Mars
+
+    bodies.emplace_back(std::move(Body{1.898e27, 14, {600 + 778.5, 450},
+                                       sf::Color(255, 220, 140),
+                                       std::make_unique<InfinitySpectrum>()})); // Jupiter
+
+    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 4.8e4});
+    bodies[2].setInitialVelocity(sf::Vector2<long double>{0, 3.5e4});
+    bodies[3].setInitialVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
+    bodies[4].setInitialVelocity(sf::Vector2<long double>{0, 2.413e4});
+    bodies[5].setInitialVelocity(sf::Vector2<long double>{0, 1.306e4});
+    */
+
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
