@@ -17,9 +17,11 @@ private:
     float unitDistance;
     std::vector<std::vector<sf::Vertex>> vertices;
     sf::Color color;
+    float forceMultiplier;
 
 public:
-    EinsteinGrid(std::pair<float, float> window_size, float distance, sf::Color color = sf::Color::White);
+    EinsteinGrid(std::pair<float, float> window_size, float distance, sf::Color color = sf::Color::White,
+                 float multiplier = 10.f);
     ~EinsteinGrid() = default;
     void update(const std::vector<Body>& bodies);
     void draw(sf::RenderWindow & window);
