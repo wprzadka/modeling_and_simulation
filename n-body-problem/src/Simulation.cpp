@@ -34,6 +34,7 @@
 //    }
 //}
 
+Simulation::Simulation(float stepSize): stepSize(stepSize) {}
 
 void Simulation::calculateAccelerations(std::vector<Body>& bodies){
     for (auto &body : bodies) {

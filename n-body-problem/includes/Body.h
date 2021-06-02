@@ -12,6 +12,7 @@
 
 class Body {
     double mass;
+    sf::Vector2<long double> position{0, 0};
     sf::Vector2<long double> velocity{0, 0};
     sf::Vector2<long double> acceleration{0, 0};
 
@@ -32,7 +33,7 @@ public:
     void drawSpectrum(sf::RenderWindow&) const;
     void addForce(sf::Vector2<long double> force);
     void move(float time_step);
-    void setPosition(const sf::Vector2f& position);
+    void setPosition(const sf::Vector2<long double>& position);
     void setVelocity(sf::Vector2<long double> vel) noexcept;
 
     void clearAcceleration() noexcept { acceleration = {0, 0}; }

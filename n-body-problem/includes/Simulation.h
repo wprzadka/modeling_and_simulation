@@ -9,13 +9,15 @@
 #include <SFML/Window.hpp>
 #include "Body.h"
 #include "solver/Euler.h"
+#include "Constants.h"
 
 class Simulation {
 
 //    const SolverType solver;
-    const long double stepSize = 0.1;
+    const float stepSize;
 
 public:
+    explicit Simulation(float stepSize);
 
 //    Simulation(const SolverType& solver);
     template <int N>
@@ -23,6 +25,11 @@ public:
     void update(std::vector<Body>& bodies){
 
         calculateAccelerations(bodies);
+
+//        for (auto& body : bodies){
+//            body.move(stepSize);
+//        }
+
 
         std::array<sf::Vector2<long double>, N> acceleration;
         std::array<sf::Vector2<long double>, N> velocity;
@@ -38,10 +45,9 @@ public:
 
         for(int i = 0; i < N; ++i){
             bodies[i].setVelocity(velocity[i]);
-            float pos_x = position[i].x;
-            float pos_y = position[i].y;
-            bodies[i].setPosition(sf::Vector2f(pos_x, pos_y));
+            bodies[i].setPosition(position[i]);
         }
+
     }
 
 private:

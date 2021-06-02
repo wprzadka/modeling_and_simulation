@@ -126,7 +126,7 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
-    Simulation simulation{};
+    Simulation simulation(TIME_STEP);
     MassCenter center{bodies, 2};
     std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20,
                                                               sf::Color(60, 60, 60));
@@ -134,8 +134,8 @@ int main(){
     bool isSimulationRunning = true;
     bool isDrawingEverytime;
 
-    int drawingInterval = 1;
-//    int drawingInterval = 256;
+//    int drawingInterval = 1;
+    int drawingInterval = 256;
 //    int drawingInterval = 4096;
 //    int drawingInterval = 16384;
 //    int drawingInterval = 32768;
