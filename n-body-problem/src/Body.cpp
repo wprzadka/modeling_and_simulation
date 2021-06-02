@@ -58,6 +58,18 @@ void Body::move(float time_step) {
     }
 }
 
+void Body::setPosition(const sf::Vector2f& position){
+    shape.setPosition(position);
+
+    if(positionSpectrum != nullptr) {
+        positionSpectrum->addPosition(shape.getPosition());
+    }
+}
+
+void Body::setVelocity(sf::Vector2<long double> vel) noexcept {
+    velocity = vel;
+}
+
 void Body::showDescription(sf::RenderWindow& window){
     description.update(
             getPosition(),
@@ -77,8 +89,4 @@ void Body::makeDescriptionActiveOnAsideFromWindow(const sf::Vector2<unsigned int
 bool Body::isAsideFromWindow(const sf::Vector2<unsigned int> &winSize) {
     auto pos = shape.getPosition();
     return pos.x < 0 || pos.x > winSize.x || pos.y < 0 || pos.y > winSize.y;
-}
-
-void Body::setInitialVelocity(sf::Vector2<long double> vel) noexcept {
-    velocity = vel;
 }

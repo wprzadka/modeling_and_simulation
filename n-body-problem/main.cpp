@@ -12,12 +12,12 @@
 #include "includes/grid/VectorsGrid.h"
 #include "includes/Constants.h"
 #include "includes/spectrum/ListSpectrum.h"
+#include "includes/Simulation.h"
+#include "includes/solver/Euler.h"
 
-static sf::Vector2<long double> calculateForce(const Body &first, const Body &second);
-static bool areColliding(const Body& first, const Body& second);
 static bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance = 1);
 
-static const float TIME_STEP = 1;                          // [s] amount of time in one iteration
+static const float TIME_STEP = 0.01;                          // [s] amount of time in one iteration
 static float totalTime = 0;
 
 int main(){
@@ -36,7 +36,7 @@ int main(){
     bodies.emplace_back(std::move(Body{5.972e24, 2, {600 + 149.6, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<InfinitySpectrum>()})); // Earth
-    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
     */
     //  Earth - Moon system
     // DISTANCE_UNIT = 1e6 [m]
@@ -47,7 +47,7 @@ int main(){
     bodies.emplace_back(std::move(Body{7.34767309e22, 2, {600 + 384.4, 450},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<InfinitySpectrum>()})); // Moon
-    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 1.022e3});
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 1.022e3});
     */
     //  Three bodies
     // DISTANCE_UNIT = 1e6 [m]
@@ -80,14 +80,17 @@ int main(){
     bodies.emplace_back(std::move(Body{7.34767309e24, 5, {600, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()}));
+
+
+
 //    for(auto& body : bodies){
-//        body.setInitialVelocity(sf::Vector2<long double>{1e3, 0});
+//        body.setVelocity(sf::Vector2<long double>{1e3, 0});
 //    }
 
 
     //  Solar system
     // DISTANCE_UNIT = 1e9 [m]
-    /*
+/*
     bodies.emplace_back(std::move(Body{1.989e30, 28,{600, 450},
                                        sf::Color(255, 200, 100),
                                        std::make_unique<ListSpectrum>()})); // Sun
@@ -112,17 +115,18 @@ int main(){
                                        sf::Color(255, 220, 140),
                                        std::make_unique<InfinitySpectrum>()})); // Jupiter
 
-    bodies[1].setInitialVelocity(sf::Vector2<long double>{0, 4.8e4});
-    bodies[2].setInitialVelocity(sf::Vector2<long double>{0, 3.5e4});
-    bodies[3].setInitialVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
-    bodies[4].setInitialVelocity(sf::Vector2<long double>{0, 2.413e4});
-    bodies[5].setInitialVelocity(sf::Vector2<long double>{0, 1.306e4});
-    */
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 4.8e4});
+    bodies[2].setVelocity(sf::Vector2<long double>{0, 3.5e4});
+    bodies[3].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
+    bodies[4].setVelocity(sf::Vector2<long double>{0, 2.413e4});
+    bodies[5].setVelocity(sf::Vector2<long double>{0, 1.306e4});
+*/
 
 
     sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
     window.setFramerateLimit(60);
 
+    Simulation simulation{};
     MassCenter center{bodies, 2};
     std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20,
                                                               sf::Color(60, 60, 60));
@@ -130,7 +134,8 @@ int main(){
     bool isSimulationRunning = true;
     bool isDrawingEverytime;
 
-    int drawingInterval = 256;
+    int drawingInterval = 1;
+//    int drawingInterval = 256;
 //    int drawingInterval = 4096;
 //    int drawingInterval = 16384;
 //    int drawingInterval = 32768;
@@ -162,6 +167,7 @@ int main(){
         if(isSimulationRunning) {
             totalTime += TIME_STEP;
 
+            /*
             for (auto &body : bodies) {
                 body.clearAcceleration();
             }
@@ -177,7 +183,13 @@ int main(){
             for (auto &body : bodies) {
                 body.move(TIME_STEP);
             }
+            */
 
+            simulation.update<5>(bodies);
+
+//            for (auto &body : bodies) {
+//                body.setPosition(newPosition);
+//            }
             isDrawingEverytime = false;
         }else{
             isDrawingEverytime = true;
@@ -209,24 +221,6 @@ int main(){
         }
     }
     return 0;
-}
-
-sf::Vector2<long double> calculateForce(const Body &first, const Body &second){
-    double x_diff = first.getPosition().x - second.getPosition().x; // [distance_units] -> vector
-    double y_diff = first.getPosition().y - second.getPosition().y; // [distance_units] -> vector
-    double diff_sqrt = std::pow(x_diff, 2) + std::pow(y_diff, 2); // [distance_units^2]
-    double norm_diff = std::sqrt(diff_sqrt); // [distance_units]
-
-    sf::Vector2<long double> diff_vec_normalized{x_diff / norm_diff, y_diff / norm_diff}; // [-] -> vector
-    long double distance_sqrt = diff_sqrt * std::pow(DISTANCE_UNIT, 2); // [m^2]
-    return diff_vec_normalized * static_cast<long double>(first.getMass() * second.getMass())
-        * GRAVITATIONAL_CONST / distance_sqrt; // [kg^2⋅m^3⋅kg^−1⋅s^−2⋅m^-2] = [kg⋅m⋅s^-2] -> vector
-}
-
-bool areColliding(const Body &first, const Body &second){
-    auto diff_vec = first.getPosition() - second.getPosition(); // [distance_units] -> vector
-    auto distance = std::sqrt(std::pow(diff_vec.x, 2) + std::pow(diff_vec.y, 2)); // [distance_units] -> vector
-    return distance < first.getRadius() + second.getRadius();
 }
 
 bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance){

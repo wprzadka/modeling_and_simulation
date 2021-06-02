@@ -9,12 +9,14 @@ add_executable(${PROJECT_NAME}
         main.cpp
         src/Body.cpp
         src/spectrum/InfinitySpectrum.cpp
+        src/spectrum/ListSpectrum.cpp
         src/MassCenter.cpp
         src/grid/MetricGrid.cpp
         src/grid/EinsteinGrid.cpp
         src/grid/VectorsGrid.cpp
-        src/spectrum/ListSpectrum.cpp
         src/Description.cpp
+        src/solver/Euler.cpp
+        src/Simulation.cpp
         )
 
 target_link_libraries(${PROJECT_NAME} -lsfml-window -lsfml-graphics -lsfml-system)
