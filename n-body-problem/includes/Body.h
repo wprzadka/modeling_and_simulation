@@ -12,10 +12,8 @@
 
 class Body {
     double mass;
-    sf::Vector2<long double> position{0, 0};
     sf::Vector2<long double> velocity{0, 0};
     sf::Vector2<long double> acceleration{0, 0};
-
     sf::CircleShape shape;
     std::unique_ptr<Spectrum> positionSpectrum = nullptr;
     Description description;

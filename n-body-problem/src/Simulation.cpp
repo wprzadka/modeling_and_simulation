@@ -4,39 +4,33 @@
 
 #include <cmath>
 #include "../includes/Simulation.h"
-#include "../includes/solver/Solver.h"
 #include "../includes/Constants.h"
 #include "../includes/solver/Euler.h"
+#include "../src/solver/Euler.cpp"
 
-//template <int N, class SolverType>
-//Simulation<N, SolverType>::Simulation(const SolverType& solver = SolverType()) : solver(solver){}
 
-//template<int N>
-//void Simulation::update(std::vector<Body>& bodies){
-//
-//    calculateAccelerations(bodies);
-//
-//    std::array<sf::Vector3f, N> acceleration;
-//    std::array<sf::Vector3f, N> velocity;
-//    std::array<sf::Vector3f, N> position;
-//    for (int i = 0; i < N; ++i){
-//        acceleration[i] = bodies[i].getAcceleration();
-//        velocity[i] = bodies[i].getVelocity();
-//        position[i] = bodies[i].getPosition();
-//    }
-//
-//    velocity = Euler<N>::solve(velocity, acceleration, stepSize);
-//    position = Euler<N>::solve(position, velocity, stepSize);
-//
-//    for(int i = 0; i < N; ++i){
-//        bodies[i].setVelocity(velocity[i]);
-//        bodies[i].setPosition(position[i]);
-//    }
-//}
+template <unsigned int N, class SOLVER>
+Simulation<N, SOLVER>::Simulation(float stepSize, std::vector<Body>& bodies): stepSize(stepSize) {
+    for (int i = 0; i < N; ++i){
+        position[i] = (sf::Vector2<long double>)bodies[i].getPosition(); // [unit / s^2]
+    }
+}
 
-Simulation::Simulation(float stepSize): stepSize(stepSize) {}
+template <unsigned int N, class SOLVER>
+void Simulation<N, SOLVER>::update(std::vector<Body>& bodies){
 
-void Simulation::calculateAccelerations(std::vector<Body>& bodies){
+    calculateAccelerations(bodies);
+
+    velocity = SOLVER::solve(velocity, acceleration, stepSize);
+    position = SOLVER::solve(position, velocity, stepSize);
+    for(int i = 0; i < N; ++i){
+        bodies[i].setVelocity(velocity[i]); // [m / s]
+        bodies[i].setPosition(position[i]); // [m]
+    }
+}
+
+template <unsigned int N, class SOLVER>
+void Simulation<N, SOLVER>::calculateAccelerations(std::vector<Body>& bodies){
     for (auto &body : bodies) {
         body.clearAcceleration();
     }
@@ -49,9 +43,13 @@ void Simulation::calculateAccelerations(std::vector<Body>& bodies){
             }
         }
     }
+    for (int i = 0; i < N; ++i){
+        acceleration[i] = bodies[i].getAcceleration() / DISTANCE_UNIT; // [unit / s^2]
+    }
 }
 
-sf::Vector2<long double> Simulation::calculateForce(const Body &first, const Body &second){
+template <unsigned int N, class SOLVER>
+sf::Vector2<long double> Simulation<N, SOLVER>::calculateForce(const Body &first, const Body &second){
     double x_diff = first.getPosition().x - second.getPosition().x; // [distance_units] -> vector
     double y_diff = first.getPosition().y - second.getPosition().y; // [distance_units] -> vector
     double diff_sqrt = std::pow(x_diff, 2) + std::pow(y_diff, 2); // [distance_units^2]
@@ -63,7 +61,8 @@ sf::Vector2<long double> Simulation::calculateForce(const Body &first, const Bod
            * GRAVITATIONAL_CONST / distance_sqrt; // [kg^2⋅m^3⋅kg^−1⋅s^−2⋅m^-2] = [kg⋅m⋅s^-2] -> vector
 }
 
-bool Simulation::areColliding(const Body &first, const Body &second){
+template <unsigned int N, class SOLVER>
+bool Simulation<N, SOLVER>::areColliding(const Body &first, const Body &second){
     auto diff_vec = first.getPosition() - second.getPosition(); // [distance_units] -> vector
     auto distance = std::sqrt(std::pow(diff_vec.x, 2) + std::pow(diff_vec.y, 2)); // [distance_units] -> vector
     return distance < first.getRadius() + second.getRadius();

@@ -13,11 +13,12 @@
 #include "includes/Constants.h"
 #include "includes/spectrum/ListSpectrum.h"
 #include "includes/Simulation.h"
+#include "src/Simulation.cpp"
 #include "includes/solver/Euler.h"
 
 static bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, float aproxDistance = 1);
 
-static const float TIME_STEP = 0.01;                          // [s] amount of time in one iteration
+static const float TIME_STEP = 1;                          // [s] amount of time in one iteration
 static float totalTime = 0;
 
 int main(){
@@ -123,13 +124,14 @@ int main(){
 */
 
 
-    sf::RenderWindow window(sf::VideoMode(window_size.first, window_size.second), "n-body");
+    sf::RenderWindow window(
+            sf::VideoMode(static_cast<int>(window_size.first), static_cast<int>(window_size.second)),
+            "n-body");
     window.setFramerateLimit(60);
 
-    Simulation simulation(TIME_STEP);
+    Simulation<5, Euler> simulation(TIME_STEP, bodies);
     MassCenter center{bodies, 2};
-    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20,
-                                                              sf::Color(60, 60, 60));
+    std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20, sf::Color(60, 60, 60));
 
     bool isSimulationRunning = true;
     bool isDrawingEverytime;
@@ -167,29 +169,8 @@ int main(){
         if(isSimulationRunning) {
             totalTime += TIME_STEP;
 
-            /*
-            for (auto &body : bodies) {
-                body.clearAcceleration();
-            }
-            for (int k = 0; k < bodies.size(); ++k) {
-                for (int m = k + 1; m < bodies.size(); ++m) {
-                    if (!areColliding(bodies[k], bodies[m])) {
-                        sf::Vector2<long double> force = calculateForce(bodies[k], bodies[m]);
-                        bodies[k].addForce(-force);
-                        bodies[m].addForce(force);
-                    }
-                }
-            }
-            for (auto &body : bodies) {
-                body.move(TIME_STEP);
-            }
-            */
+            simulation.update(bodies);
 
-            simulation.update<5>(bodies);
-
-//            for (auto &body : bodies) {
-//                body.setPosition(newPosition);
-//            }
             isDrawingEverytime = false;
         }else{
             isDrawingEverytime = true;

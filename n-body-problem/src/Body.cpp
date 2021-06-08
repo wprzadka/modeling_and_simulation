@@ -7,14 +7,14 @@
 #include "../includes/Constants.h"
 
 Body::Body(double mass, float radius, sf::Vector2f position)
-    : mass(mass), shape(radius), position(position), description() {
+    : mass(mass), shape(radius), description() {
 
     shape.setOrigin(radius, radius);
     shape.setPosition(position);
 }
 
 Body::Body(double mass, float radius, sf::Vector2f position, sf::Color color, std::unique_ptr<Spectrum> spectrum)
-        : mass(mass), shape(radius), position(position), positionSpectrum(std::move(spectrum)), description(color) {
+        : mass(mass), shape(radius), positionSpectrum(std::move(spectrum)), description(color) {
 
     shape.setOrigin(radius, radius);
     shape.setPosition(position);
@@ -30,7 +30,6 @@ Body::Body(double mass, float radius, sf::Vector2f position, sf::Color color, st
 Body::Body(Body &&original) noexcept :
         mass(original.mass),
         shape(std::move(original.shape)),
-        position(std::move(original.position)),
         positionSpectrum(std::move(original.positionSpectrum)),
         description(std::move(original.description)){}
 
@@ -61,11 +60,7 @@ void Body::move(float time_step) {
 }
 
 void Body::setPosition(const sf::Vector2<long double>& position){
-    sf::Vector2f positionDiff = static_cast<sf::Vector2f>(velocity * 0.01l);// static_cast<sf::Vector2f>(position - this->position);
-    printf("(%f, %f)\n", positionDiff.x, positionDiff.y);
-    this->position = position;
-    shape.move(positionDiff / static_cast<float>(DISTANCE_UNIT)); // [unit]
-//    shape.setPosition(shape.getPosition() + positionDiff);
+    shape.setPosition(static_cast<sf::Vector2f>(position));
 
     if(positionSpectrum != nullptr) {
         positionSpectrum->addPosition(shape.getPosition());
@@ -73,7 +68,7 @@ void Body::setPosition(const sf::Vector2<long double>& position){
 }
 
 void Body::setVelocity(sf::Vector2<long double> vel) noexcept {
-    velocity = vel;
+    velocity = vel; // [m / s]
 }
 
 void Body::showDescription(sf::RenderWindow& window){

@@ -5,18 +5,15 @@
 #define N_BODY_PROBLEM_EULER_H
 
 
-#include <SFML/Window.hpp>
-#include "Solver.h"
-
 class Euler {
 public:
-    template <int N>
+    template <unsigned long int N>
     static std::array<sf::Vector2<long double>, N> solve(
             std::array<sf::Vector2<long double>, N> prevValue,
             std::array<sf::Vector2<long double>, N> derivative,
             long double stepSize){
 
-        std::array<sf::Vector2<long double>, N> nextValue;
+        std::array<sf::Vector2<long double>, N> nextValue{};
         for (int i = 0; i < N; ++i){
             nextValue[i] = prevValue[i] + stepSize * derivative[i];
         }
