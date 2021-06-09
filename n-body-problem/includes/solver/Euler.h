@@ -4,21 +4,43 @@
 #ifndef N_BODY_PROBLEM_EULER_H
 #define N_BODY_PROBLEM_EULER_H
 
+#include <functional>
 
 class Euler {
 public:
-    template <unsigned long int N>
-    static std::array<sf::Vector2<long double>, N> solve(
-            std::array<sf::Vector2<long double>, N> prevValue,
-            std::array<sf::Vector2<long double>, N> derivative,
-            long double stepSize){
 
-        std::array<sf::Vector2<long double>, N> nextValue{};
+    template <unsigned long int N>
+    static std::pair<
+            std::array<sf::Vector2<long double>, N>,
+            std::array<sf::Vector2<long double>, N>
+    > solve(
+            float time,
+            std::array<sf::Vector2<long double>, N> pos,
+            std::array<sf::Vector2<long double>, N> vel,
+            std::function<
+                    std::pair<
+                            std::array<sf::Vector2<long double>, N>,
+                            std::array<sf::Vector2<long double>, N>
+                    >(
+                            float,
+                            std::array<sf::Vector2<long double>, N>,
+                            std::array<sf::Vector2<long double>, N>
+                    )> f,
+            long double stepSize
+    ){
+        std::array<sf::Vector2<long double>, N> nextPos{};
+        std::array<sf::Vector2<long double>, N> nextVel{};
+        std::pair<
+                std::array<sf::Vector2<long double>, N>,
+                std::array<sf::Vector2<long double>, N>
+        > derivative = f(time, pos, vel);
         for (int i = 0; i < N; ++i){
-            nextValue[i] = prevValue[i] + stepSize * derivative[i];
+            nextPos[i] = pos[i] + stepSize * derivative.first[i];
+            nextVel[i] = vel[i] + stepSize * derivative.second[i];
         }
-        return nextValue;
+        return std::make_pair(nextPos, nextVel);
     }
+
 };
 
 

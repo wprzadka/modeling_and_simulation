@@ -15,7 +15,6 @@ add_executable(${PROJECT_NAME}
         src/grid/EinsteinGrid.cpp
         src/grid/VectorsGrid.cpp
         src/Description.cpp
-        src/solver/Euler.cpp
         src/Simulation.cpp
         )
 

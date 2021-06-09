@@ -14,20 +14,40 @@
 template <unsigned int N, class SOLVER>
 class Simulation {
 
-//    const SolverType solver;
-    const float stepSize;
-    std::array<sf::Vector2<long double>, N> acceleration;
+    std::array<long double, N> mass;
+    std::array<float, N> radius;
+
     std::array<sf::Vector2<long double>, N> velocity;
     std::array<sf::Vector2<long double>, N> position;
+    float time = 0;
+    const float stepSize;
 
 public:
     explicit Simulation(float stepSize, std::vector<Body>& bodies);
     void update(std::vector<Body>& bodies);
 
+    std::pair<
+    std::array<sf::Vector2<long double>, N>,
+    std::array<sf::Vector2<long double>, N>
+    > computeDerivatives(
+            float time,
+            std::array<sf::Vector2<long double>, N> pos,
+            std::array<sf::Vector2<long double>, N> vel
+            );
+
 private:
-    void calculateAccelerations(std::vector<Body>& bodies);
-    sf::Vector2<long double> calculateForce(const Body& a, const Body& b);
-    bool areColliding(const Body &first, const Body &second);
+    sf::Vector2<long double> calculateForce(
+            const sf::Vector2<long double>& fstPos,
+            const sf::Vector2<long double>& sndPos,
+            const long double& fstMass,
+            const long double& sndMass
+            );
+    bool areColliding(
+            const sf::Vector2<long double>& fstPos,
+            const sf::Vector2<long double>& sndPos,
+            const float& fstRad,
+            const float& sndRad
+            );
 };
 
 
