@@ -8,6 +8,7 @@
 #include "../includes/Constants.h"
 #include "../includes/solver/Euler.h"
 #include "../includes/solver/RungeKutta.h"
+#include "../includes/solver/Trapezoidal.h"
 
 
 template <unsigned int N, class SOLVER>
@@ -23,7 +24,7 @@ Simulation<N, SOLVER>::Simulation(float stepSize, std::vector<Body>& bodies): st
 template <unsigned int N, class SOLVER>
 void Simulation<N, SOLVER>::update(std::vector<Body>& bodies){
 
-    auto next = RungeKutta::solve<N>(
+    auto next = Trapezoidal::solve<N>(
             time,
             position,
             velocity,
