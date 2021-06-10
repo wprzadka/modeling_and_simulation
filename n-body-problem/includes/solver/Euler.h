@@ -14,8 +14,8 @@ public:
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
     > solve(
-            std::array<sf::Vector2<long double>, N> pos,
-            std::array<sf::Vector2<long double>, N> vel,
+            const std::array<sf::Vector2<long double>, N>& pos,
+            const std::array<sf::Vector2<long double>, N>& vel,
             std::function<
                     std::pair<
                             std::array<sf::Vector2<long double>, N>,
