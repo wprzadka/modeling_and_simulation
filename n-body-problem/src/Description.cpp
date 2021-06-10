@@ -62,12 +62,14 @@ void Description::update(
     data << "velocity: "
          << sqrt(pow(velocity.x, 2) + pow(velocity.y, 2))
          << " [m/s]\n";
-    data << "acceleration: "
-        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2))
-        << " [m/s^2]\n";
-    data << "force: "
-        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2) * pow(mass, 2))
-        << " [N]\n";
+//    data << "acceleration: "
+//        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2))
+//        << " [m/s^2]\n";
+//    data << "force: "
+//        << sqrt(pow(acceleration.x, 2) + pow(acceleration.y, 2) * pow(mass, 2))
+//        << " [N]\n";
+
+
 //    data << "velocity: ("
 //         << velocity.x << ", "
 //         << velocity.y << ") [m/s]\n";

@@ -16,9 +16,9 @@ Simulation<N, SOLVER>::Simulation(float stepSize, std::vector<Body>& bodies): st
     for (int i = 0; i < N; ++i){
         mass[i] = bodies[i].getMass();
         radius[i] = bodies[i].getRadius();
-        position[i] = (sf::Vector2<long double>)bodies[i].getPosition(); // [unit / s^2]
+        position[i] = (sf::Vector2<long double>)bodies[i].getPosition(); // [unit]
+        velocity[i] = (sf::Vector2<long double>)bodies[i].getVelocity(); // [unit / s]
     }
-    std::fill(velocity.begin(), velocity.end(), sf::Vector2<long double>{0,0});
 }
 
 template <unsigned int N, class SOLVER>
@@ -39,7 +39,8 @@ void Simulation<N, SOLVER>::update(std::vector<Body>& bodies){
     velocity = next.second;
 
     for(int i = 0; i < N; ++i){
-        bodies[i].setPosition(position[i]); // [m]
+        bodies[i].setVelocity(velocity[i] * DISTANCE_UNIT); // [m / s]
+        bodies[i].setPosition(position[i]); // [unit]
     }
 }
 
