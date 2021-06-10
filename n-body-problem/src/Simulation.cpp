@@ -25,15 +25,13 @@ template <unsigned int N, class SOLVER>
 void Simulation<N, SOLVER>::update(std::vector<Body>& bodies){
 
     auto next = Trapezoidal::solve<N>(
-            time,
             position,
             velocity,
             [&](
-                    float time,
                     std::array<sf::Vector2<long double>, N> pos,
                     std::array<sf::Vector2<long double>, N> vel
             ){
-                return computeDerivatives(time, pos, vel);
+                return computeDerivatives(pos, vel);
             },
             stepSize
             );
@@ -50,7 +48,6 @@ std::pair<
 std::array<sf::Vector2<long double>, N>,
 std::array<sf::Vector2<long double>, N>
 > Simulation<N, SOLVER>::computeDerivatives(
-        float time,
         std::array<sf::Vector2<long double>, N> pos,
         std::array<sf::Vector2<long double>, N> vel
         ) {

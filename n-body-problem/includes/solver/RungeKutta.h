@@ -12,15 +12,12 @@ public:
     std::array<sf::Vector2<long double>, N>,
     std::array<sf::Vector2<long double>, N>
     > solve(
-            float time,
             std::array<sf::Vector2<long double>, N> pos,
             std::array<sf::Vector2<long double>, N> vel,
-            std::function<
-            std::pair<
+            std::function<std::pair<
                     std::array<sf::Vector2<long double>, N>,
-            std::array<sf::Vector2<long double>, N>
+                    std::array<sf::Vector2<long double>, N>
     >(
-    float,
     std::array<sf::Vector2<long double>, N>,
     std::array<sf::Vector2<long double>, N>
     )> f,
@@ -30,7 +27,7 @@ public:
         std::array<sf::Vector2<long double>, N> nextVel{};
 
 //        k1
-        auto k1 = f(time, pos, vel);
+        auto k1 = f(pos, vel);
 
         std::array<sf::Vector2<long double>, N> tempPos{};
         std::array<sf::Vector2<long double>, N> tempVel{};
@@ -39,19 +36,19 @@ public:
             tempPos[i] = pos[i] + k1.first[i] / 2.0l;
             tempVel[i] = vel[i] + k1.second[i] / 2.0l;
         }
-        auto k2 = f(time + stepSize / 2, tempPos, tempVel);
+        auto k2 = f(tempPos, tempVel);
 //        k3
         for (int i = 0; i < N; ++i) {
             tempPos[i] = pos[i] + k2.first[i] / 2.0l;
             tempVel[i] = vel[i] + k2.second[i] / 2.0l;
         }
-        auto k3 = f(time + stepSize / 2, tempPos, tempVel);
+        auto k3 = f(tempPos, tempVel);
 
         for (int i = 0; i < N; ++i) {
             tempPos[i] = pos[i] + k3.first[i];
             tempVel[i] = vel[i] + k3.second[i];
         }
-        auto k4 = f(time + stepSize, tempPos, tempVel);
+        auto k4 = f(tempPos, tempVel);
 
         for (int i = 0; i < N; ++i){
 

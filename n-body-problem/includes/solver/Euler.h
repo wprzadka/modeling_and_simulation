@@ -14,7 +14,6 @@ public:
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
     > solve(
-            float time,
             std::array<sf::Vector2<long double>, N> pos,
             std::array<sf::Vector2<long double>, N> vel,
             std::function<
@@ -22,7 +21,6 @@ public:
                             std::array<sf::Vector2<long double>, N>,
                             std::array<sf::Vector2<long double>, N>
                     >(
-                            float,
                             std::array<sf::Vector2<long double>, N>,
                             std::array<sf::Vector2<long double>, N>
                     )> f,
@@ -33,7 +31,7 @@ public:
         std::pair<
                 std::array<sf::Vector2<long double>, N>,
                 std::array<sf::Vector2<long double>, N>
-        > derivative = f(time, pos, vel);
+        > derivative = f(pos, vel);
         for (int i = 0; i < N; ++i){
             nextPos[i] = pos[i] + stepSize * derivative.first[i];
             nextVel[i] = vel[i] + stepSize * derivative.second[i];

@@ -19,7 +19,6 @@ class Simulation {
 
     std::array<sf::Vector2<long double>, N> velocity;
     std::array<sf::Vector2<long double>, N> position;
-    float time = 0;
     const float stepSize;
 
 public:
@@ -30,7 +29,6 @@ public:
     std::array<sf::Vector2<long double>, N>,
     std::array<sf::Vector2<long double>, N>
     > computeDerivatives(
-            float time,
             std::array<sf::Vector2<long double>, N> pos,
             std::array<sf::Vector2<long double>, N> vel
             );

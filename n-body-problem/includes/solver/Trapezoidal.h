@@ -15,7 +15,6 @@ public:
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
     > solve(
-            float time,
             std::array<sf::Vector2<long double>, N> pos,
             std::array<sf::Vector2<long double>, N> vel,
             std::function<
@@ -23,7 +22,6 @@ public:
                             std::array<sf::Vector2<long double>, N>,
                             std::array<sf::Vector2<long double>, N>
                     >(
-                            float,
                             std::array<sf::Vector2<long double>, N>,
                             std::array<sf::Vector2<long double>, N>
                     )> f,
@@ -36,12 +34,12 @@ public:
         std::pair<
                 std::array<sf::Vector2<long double>, N>,
                 std::array<sf::Vector2<long double>, N>
-        > rk4 = RungeKutta::solve<N>(time, pos, vel, f, stepSize);
+        > rk4 = RungeKutta::solve<N>(pos, vel, f, stepSize);
 
         std::pair<
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
-        > derivative = f(time, pos, vel);
+        > derivative = f(pos, vel);
 
         std::array<sf::Vector2<long double>, N> estimatedPos{};
         std::array<sf::Vector2<long double>, N> estimatedVel{};
@@ -53,11 +51,11 @@ public:
         std::pair<
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
-        > nextDerivative = f(time + stepSize, estimatedPos, estimatedVel);
+        > nextDerivative = f(estimatedPos, estimatedVel);
 
         for (int i = 0; i < N; ++i){
-            nextPos[i] = pos[i] + stepSize * 0.5 * (derivative.first[i] + nextDerivative.first[i]);
-            nextVel[i] = vel[i] + stepSize * 0.5 * (derivative.second[i] + nextDerivative.second[i]);
+            nextPos[i] = pos[i] + stepSize * 0.5l * (derivative.first[i] + nextDerivative.first[i]);
+            nextVel[i] = vel[i] + stepSize * 0.5l * (derivative.second[i] + nextDerivative.second[i]);
         }
         return std::make_pair(nextPos, nextVel);
     }
