@@ -2,7 +2,9 @@
 // Created by viking on 09.11.2020.
 //
 
+#include <cmath>
 #include "../includes/MassCenter.h"
+#include "../includes/Constants.h"
 
 
 MassCenter::MassCenter(float size) : shape(size) {
@@ -24,6 +26,19 @@ long double MassCenter::calculateTotalMass(const std::vector<Body>& bodies) {
     return totalMassOfSystem;
 }
 
+sf::Vector2<double> MassCenter::saveInitialMassCenter(const std::vector<Body>& bodies) {
+    initialMassCenterPosition = findMassCenter(bodies);
+    return initialMassCenterPosition;
+}
+
+sf::Vector2<double> MassCenter::getMassCenter(const std::vector<Body>& bodies) {
+    findMassCenter(bodies);
+    shape.setPosition(static_cast<sf::Vector2<float>>(massCenterPosition));
+    sf::Vector2<double> dispVec = massCenterPosition - initialMassCenterPosition;
+    displacement.emplace_back(std::sqrt(std::pow(dispVec.x, 2) + std::pow(dispVec.y, 2)) * DISTANCE_UNIT);
+    return massCenterPosition;
+}
+
 sf::Vector2<double> MassCenter::findMassCenter(const std::vector<Body>& bodies) {
     massCenterPosition = sf::Vector2<double>{0, 0};
     for(const auto& body : bodies){
@@ -32,10 +47,7 @@ sf::Vector2<double> MassCenter::findMassCenter(const std::vector<Body>& bodies) 
     if(totalMassOfSystem == 0){
         calculateTotalMass(bodies);
     }
-    shape.setPosition(
-            static_cast<sf::Vector2<float>>(
-                    massCenterPosition / static_cast<double>(totalMassOfSystem)
-            ));
+    massCenterPosition /= static_cast<double>(totalMassOfSystem);
     return massCenterPosition;
 }
 

@@ -3,6 +3,7 @@
 //
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <numeric>
 #include "includes/Body.h"
 #include "includes/spectrum/InfinitySpectrum.h"
 #include "includes/MassCenter.h"
@@ -131,6 +132,8 @@ int main(){
 
     Simulation<5, Euler> simulation(TIME_STEP, bodies);
     MassCenter center{bodies, 2};
+    center.saveInitialMassCenter(bodies);
+
     std::unique_ptr<Grid> grid = std::make_unique<MetricGrid>(window_size, 20, sf::Color(60, 60, 60));
 
     bool isSimulationRunning = true;
@@ -160,6 +163,8 @@ int main(){
                 case sf::Event::KeyPressed:
                     if(event.key.code == sf::Keyboard::P){
                         printf("total time: %f\n", totalTime);
+                        auto disp = center.getDisplacement();
+                        printf("mass center displacement: %lf [m]\n", std::accumulate(disp.begin(), disp.end(), 0.0) / disp.size());
                         isSimulationRunning = !isSimulationRunning;
                         if(!isSimulationRunning)
                             printf("Pause\n");
@@ -179,7 +184,7 @@ int main(){
         if(isDrawingEverytime || static_cast<int>(totalTime) % drawingInterval == 0) {
 
             grid->update(bodies);
-            center.findMassCenter(bodies);
+            center.getMassCenter(bodies);
 
             window.clear();
             grid->draw(window);
