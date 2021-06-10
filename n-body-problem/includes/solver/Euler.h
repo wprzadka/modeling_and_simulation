@@ -6,10 +6,10 @@
 
 #include <functional>
 
+template <unsigned long int N>
 class Euler {
 public:
 
-    template <unsigned long int N>
     static std::pair<
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>

@@ -24,7 +24,7 @@ Simulation<N, SOLVER>::Simulation(float stepSize, std::vector<Body>& bodies): st
 template <unsigned int N, class SOLVER>
 void Simulation<N, SOLVER>::update(std::vector<Body>& bodies){
 
-    auto next = Trapezoidal::solve<N>(
+    auto next = SOLVER::solve(
             position,
             velocity,
             [&](

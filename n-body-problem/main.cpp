@@ -21,6 +21,7 @@ static bool isMouseCursorOn(const Body& target, const sf::RenderWindow& window, 
 
 static const float TIME_STEP = 1;                          // [s] amount of time in one iteration
 static float totalTime = 0;
+static constexpr unsigned int BODIES_NUM = 3;
 
 int main(){
 
@@ -31,29 +32,29 @@ int main(){
 
     //  Sun - Earth system
     // DISTANCE_UNIT = 1e9 [m]
-    /*
+/*
     bodies.emplace_back(std::move(Body{1.989e30, 20,{600, 450},
                                        sf::Color(255, 100, 100),
                                        std::make_unique<ListSpectrum>()})); // Sun
     bodies.emplace_back(std::move(Body{5.972e24, 2, {600 + 149.6, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<InfinitySpectrum>()})); // Earth
-    bodies[1].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
-    */
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4} / DISTANCE_UNIT);
+*/
     //  Earth - Moon system
     // DISTANCE_UNIT = 1e6 [m]
-    /*
+/*
     bodies.emplace_back(std::move(Body{5.972e24, 10,{600, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()})); // Earth
     bodies.emplace_back(std::move(Body{7.34767309e22, 2, {600 + 384.4, 450},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<InfinitySpectrum>()})); // Moon
-    bodies[1].setVelocity(sf::Vector2<long double>{0, 1.022e3});
-    */
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 1.022e3} / DISTANCE_UNIT);
+*/
     //  Three bodies
     // DISTANCE_UNIT = 1e6 [m]
-    /*
+
     bodies.emplace_back(std::move(Body{5.972e24, 5,{600, 400},
                                        sf::Color(255, 100, 100),
                                        std::make_unique<ListSpectrum>()}));
@@ -63,10 +64,10 @@ int main(){
     bodies.emplace_back(std::move(Body{5.972e24, 5, {550, 500},
                                        sf::Color(100, 100, 255),
                                        std::make_unique<ListSpectrum>()}));
-    */
+
     //  Five bodies
     // DISTANCE_UNIT = 1e6 [m]
-
+/*
     bodies.emplace_back(std::move(Body{5.972e24, 5, {400, 650},
                                        sf::Color(100, 150, 150),
                                        std::make_unique<ListSpectrum>()}));
@@ -82,11 +83,11 @@ int main(){
     bodies.emplace_back(std::move(Body{7.34767309e24, 5, {600, 450},
                                        sf::Color(100, 255, 100),
                                        std::make_unique<ListSpectrum>()}));
-
+*/
 
 
 //    for(auto& body : bodies){
-//        body.setVelocity(sf::Vector2<long double>{1e3, 0});
+//        body.setVelocity(sf::Vector2<long double>{1e3, 0} / DISTANCE_UNIT);
 //    }
 
 
@@ -117,11 +118,11 @@ int main(){
                                        sf::Color(255, 220, 140),
                                        std::make_unique<InfinitySpectrum>()})); // Jupiter
 
-    bodies[1].setVelocity(sf::Vector2<long double>{0, 4.8e4});
-    bodies[2].setVelocity(sf::Vector2<long double>{0, 3.5e4});
-    bodies[3].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4});
-    bodies[4].setVelocity(sf::Vector2<long double>{0, 2.413e4});
-    bodies[5].setVelocity(sf::Vector2<long double>{0, 1.306e4});
+    bodies[1].setVelocity(sf::Vector2<long double>{0, 4.8e4 / DISTANCE_UNIT});
+    bodies[2].setVelocity(sf::Vector2<long double>{0, 3.5e4 / DISTANCE_UNIT});
+    bodies[3].setVelocity(sf::Vector2<long double>{0, 2.97705782442e4 / DISTANCE_UNIT});
+    bodies[4].setVelocity(sf::Vector2<long double>{0, 2.413e4 / DISTANCE_UNIT});
+    bodies[5].setVelocity(sf::Vector2<long double>{0, 1.306e4 / DISTANCE_UNIT});
 */
 
 
@@ -130,7 +131,7 @@ int main(){
             "n-body");
     window.setFramerateLimit(60);
 
-    Simulation<5, Euler> simulation(TIME_STEP, bodies);
+    Simulation<BODIES_NUM, Trapezoidal<BODIES_NUM>> simulation(TIME_STEP, bodies);
     MassCenter center{bodies, 2};
     center.saveInitialMassCenter(bodies);
 
@@ -144,6 +145,7 @@ int main(){
 //    int drawingInterval = 4096;
 //    int drawingInterval = 16384;
 //    int drawingInterval = 32768;
+//    int drawingInterval = 65536;
 
     while(window.isOpen()){
         sf::Event event{};

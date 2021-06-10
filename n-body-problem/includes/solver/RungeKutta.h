@@ -4,10 +4,10 @@
 #ifndef N_BODY_PROBLEM_RUNGE_KUTTA_H
 #define N_BODY_PROBLEM_RUNGE_KUTTA_H
 
-
+template <unsigned long int N>
 class RungeKutta {
 public:
-    template <unsigned long int N>
+
     static std::pair<
     std::array<sf::Vector2<long double>, N>,
     std::array<sf::Vector2<long double>, N>

@@ -7,10 +7,10 @@
 #include "RungeKutta.h"
 #include <functional>
 
+template <unsigned long int N>
 class Trapezoidal {
 public:
 
-    template <unsigned long int N>
     static std::pair<
             std::array<sf::Vector2<long double>, N>,
             std::array<sf::Vector2<long double>, N>
@@ -34,7 +34,7 @@ public:
         std::pair<
                 std::array<sf::Vector2<long double>, N>,
                 std::array<sf::Vector2<long double>, N>
-        > rk4 = RungeKutta::solve<N>(pos, vel, f, stepSize);
+        > rk4 = RungeKutta<N>::solve(pos, vel, f, stepSize);
 
         std::pair<
             std::array<sf::Vector2<long double>, N>,
